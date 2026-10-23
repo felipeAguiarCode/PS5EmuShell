@@ -70,6 +70,8 @@ const ConsoleIcons = {
   nes: svg('<rect x="1.5" y="7" width="21" height="11" rx="1"/><path d="M4 7v3.5h16V7"/><path d="M3.5 13.5h4.5M3.5 15.5h4.5"/><rect x="10" y="13" width="1.8" height="1.2" rx=".3"/><rect x="12.6" y="13" width="1.8" height="1.2" rx=".3"/><path d="M16 15.5h4.5"/>'),
   // SNES: console com corpo arredondado, entrada do cartucho e botões
   snes: svg('<path d="M4.5 7h15a3 3 0 0 1 3 3v5.5a2.5 2.5 0 0 1-2.5 2.5H4a2.5 2.5 0 0 1-2.5-2.5V10a3 3 0 0 1 3-3z"/><rect x="7.5" y="5" width="9" height="4" rx=".8"/><circle cx="6" cy="13.5" r="1.3"/><circle cx="18" cy="13.5" r="1.3"/><path d="M10 14.2h1.2M12.8 14.2H14"/>'),
+  // PC (Windows): monitor com base
+  pc: svg('<rect x="2" y="3.5" width="20" height="13" rx="1.6"/><path d="M8.5 20.5h7M12 16.5v4"/><path d="M5.5 13.5h4"/>'),
   generic: svg('<path d="M6 11h4M8 9v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="18" cy="10" r=".8" fill="currentColor"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6l-.6 6.2A2.8 2.8 0 0 0 7 17l1.8-2h6.4l1.8 2a2.8 2.8 0 0 0 4.9-2.2l-.6-6.2A4 4 0 0 0 17.3 5z"/>'),
 };
 

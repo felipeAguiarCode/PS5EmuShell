@@ -18,6 +18,8 @@ const optimize = require('./optimize');
 const ra = require('./retroachievements');
 const playtime = require('./playtime');
 const { Controllers } = require('./controllers');
+const pcgames = require('./pcgames');
+const browse = require('./browse');
 
 if (!app.requestSingleInstanceLock()) app.quit();
 
@@ -388,6 +390,54 @@ function setupIpc() {
   });
 
   ipcMain.handle('path:exists', (_e, p) => !!p && fs.existsSync(config.resolve(p)));
+  ipcMain.handle('path:portable', (_e, p) => config.toPortable(p));
+
+  // ---- explorador de arquivos do launcher (controle/mouse/teclado) ----
+  ipcMain.handle('fs:places', () => browse.places());
+  ipcMain.handle('fs:list', (_e, dir, mode) => browse.list(dir, mode));
+
+  // ---- jogos de PC (botão "+") ----
+  ipcMain.handle('pcgames:info', (_e, exe) => pcgames.info(exe));
+  ipcMain.handle('pcgames:add', async (_e, exe, title) => {
+    const res = await pcgames.add(exe, title, (f, o) => app.getFileIcon(f, o));
+    if (res.ok) await rescan();
+    return res;
+  });
+  ipcMain.handle('pcgames:update', async (_e, id, patch) => {
+    const g = pcgames.update(id, patch);
+    if (g && patch.exe) await pcgames.saveIcon(id, g.exe, (f, o) => app.getFileIcon(f, o));
+    await rescan();
+    return g;
+  });
+  ipcMain.handle('pcgames:remove', async (_e, id) => {
+    pcgames.remove(id);
+    await rescan();
+    return true;
+  });
+  ipcMain.handle('pcgames:refreshIcon', async (_e, id) => {
+    const g = pcgames.list().find((x) => x.id === id);
+    return g ? !!(await pcgames.saveIcon(id, g.exe, (f, o) => app.getFileIcon(f, o))) : false;
+  });
+  // Como data: URL, para o canvas do renderer poder exportar a capa (file:// "contamina" o canvas).
+  ipcMain.handle('pcgames:icon', (_e, id) => {
+    const f = pcgames.iconFile(id);
+    if (!f) return null;
+    const type = f.endsWith('.png') ? 'image/png' : 'image/x-icon';
+    return `data:${type};base64,${fs.readFileSync(f).toString('base64')}`;
+  });
+  // Capa gerada no renderer (canvas) a partir do ícone: vira a "boxart" do jogo de PC.
+  ipcMain.handle('pcgames:saveCover', (_e, id, dataUrl) => {
+    const dest = paths.file('cache', 'covers', 'pc', id + '.png');
+    paths.ensure(path.dirname(dest));
+    fs.writeFileSync(dest, Buffer.from(String(dataUrl).split(',')[1] || '', 'base64'));
+    const g = library.find((x) => x.id === id);
+    if (g) send('cover', { id, ...covers.resolveArt(g) });
+    return true;
+  });
+  ipcMain.handle('pcgames:list', () => pcgames.list());
+
+  // ---- pastas de ROMs: qual sistema combina com os arquivos da pasta ----
+  ipcMain.handle('roms:detect', (_e, dir) => browse.detectSystems(dir, config.get().systems));
 
   ipcMain.handle('path:open', (_e, p, select) => {
     const full = config.resolve(p);

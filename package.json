@@ -1,7 +1,7 @@
 {
   "name": "playdeck",
   "productName": "PlayDeck",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Launcher de emuladores estilo PS5, controlado por controle (Xbox/XInput, DualShock 4 e DualSense)",
   "main": "src/main/main.js",
   "author": "Felipe Aguiar",

@@ -168,8 +168,28 @@ module.exports = () => ({
         },
       ],
     },
+    pcSystem(),
   ],
 });
+
+// Jogos de PC (Windows): cadastrados pelo botão "+" (data/pcgames.json), sem pasta de ROMs nem emulador.
+function pcSystem() {
+  return {
+    id: 'pc',
+    native: true,
+    bios: false,
+    name: 'PC (Windows)',
+    shortName: 'PC',
+    color: '#5b6b8a',
+    enabled: true,
+    romDirs: [],
+    extensions: [],
+    thumbnailsRepo: '',
+    defaultEmulator: '',
+    emulators: [],
+  };
+}
+module.exports.pcSystem = pcSystem;
 
 // Sistemas opcionais que podem ser adicionados em Configurações › Instalação (com download do emulador).
 // Emuladores compartilhados (mGBA, Mesen) apontam para a mesma pasta e só são baixados uma vez.

@@ -29,6 +29,7 @@ const App = {
     this.defaultOptimize = data.defaultOptimize;
     this.setGames(data.library, true);
 
+    $('[data-cmd="add"]').innerHTML = Icons.plus;
     $('[data-cmd="search"]').innerHTML = Icons.search;
     $('[data-cmd="settings"]').innerHTML = Icons.gear;
     $('[data-cmd="power"]').innerHTML = Icons.power;
@@ -79,6 +80,7 @@ const App = {
   emulatorFor(game) {
     const sys = this.system(game.system);
     if (!sys) return {};
+    if (game.native) return { id: 'windows', name: 'Windows' };
     const override = this.gs(game.id).emulator;
     return sys.emulators.find((e) => e.id === override) || sys.emulators.find((e) => e.id === sys.defaultEmulator) || sys.emulators[0] || {};
   },
@@ -343,6 +345,7 @@ const App = {
   },
 
   async gameOptions(game) {
+    if (game.native) return AddGames.options(game);
     const st = this.gs(game.id);
     const sys = this.system(game.system);
     const emu = this.emulatorFor(game);
@@ -452,6 +455,7 @@ const App = {
         }
       })
     );
+    $('[data-cmd="add"]').addEventListener('click', () => AddGames.menu());
     $('[data-cmd="search"]').addEventListener('click', () => Library.search());
     $('[data-cmd="settings"]').addEventListener('click', () => Settings.open());
     $('[data-cmd="power"]').addEventListener('click', () => this.powerMenu());

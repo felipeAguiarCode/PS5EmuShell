@@ -613,8 +613,8 @@ const Settings = {
           type: 'link',
           label: s.name,
           swatch: s.color,
-          desc: `${s.shortName} · ${counts[s.id] || 0} jogos · ${s.emulators.map((e) => e.name).join(', ') || 'sem emulador'}${s.enabled === false ? ' · desativado' : ''}`,
-          ok: s.emulators.length > 0 && s.emulators.every((e) => this.exists[e.exe]),
+          desc: `${s.shortName} · ${counts[s.id] || 0} jogos · ${s.native ? 'executáveis do Windows' : s.emulators.map((e) => e.name).join(', ') || 'sem emulador'}${s.enabled === false ? ' · desativado' : ''}`,
+          ok: s.native ? null : s.emulators.length > 0 && s.emulators.every((e) => this.exists[e.exe]),
           go: 'system:' + s.id,
         })),
         { type: 'button', style: 'action', icon: Icons.plus, label: 'Adicionar sistema', run: () => this.addSystem() },
@@ -624,6 +624,7 @@ const Settings = {
     system(id) {
       const s = this.cfg.systems.find((x) => x.id === id);
       if (!s) return this.pages.systems.call(this);
+      if (s.native) return AddGames.settingsRows(s, this);
       const rows = [
         { type: 'title', label: s.name },
         { type: 'toggle', label: 'Ativado', desc: 'Sistemas desativados não aparecem na biblioteca.', get: () => s.enabled !== false, set: (v) => (s.enabled = v), systems: true },

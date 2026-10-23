@@ -76,6 +76,11 @@ async function scan() {
   const games = [];
   for (const sys of cfg.systems) {
     if (sys.enabled === false) continue;
+    // Jogos de PC não vêm de pastas: são os cadastrados pelo botão "+".
+    if (sys.native) {
+      games.push(...require('./pcgames').games());
+      continue;
+    }
     const exts = new Set(
       (sys.extensions || []).map((e) => (e.startsWith('.') ? e : '.' + e).toLowerCase())
     );

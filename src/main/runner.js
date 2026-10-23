@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config');
 const paths = require('./paths');
+const procs = require('./procs');
 
 // Divide "args" respeitando aspas; placeholders são trocados depois, então caminhos com espaço funcionam.
 function tokenize(str) {
@@ -50,8 +51,76 @@ function log(line) {
 
 let current = null;
 
+const WATCH_MS = 3000;
+
+// Jogo de PC: abre o .exe direto. Como muitos jogos abrem um "launcher" que sai logo e inicia o jogo
+// real, a sessão só termina quando não sobra nenhum processo rodando a partir da pasta do jogo.
+function startNative(game, onExit) {
+  const exe = config.resolve(game.path);
+  if (!exe || !fs.existsSync(exe)) return { ok: false, error: `Executável não encontrado: ${exe}` };
+  // Caminho real (sem nomes curtos tipo FELIPE~1), igual ao que a lista de processos devolve.
+  let dir = path.dirname(exe);
+  try {
+    dir = fs.realpathSync.native(dir);
+  } catch {}
+  const emu = { id: 'windows', name: 'Windows' };
+  log(`START PC: "${exe}"`);
+  // Processos que já rodavam dessa pasta antes do jogo não contam.
+  const before = new Set(procs.inFolder(dir).map((p) => p.pid));
+  const startedAt = Date.now();
+  let finished = false;
+  let childAlive = true;
+  let empty = 0;
+  let timer = null;
+  const finish = (code, error) => {
+    if (finished) return;
+    finished = true;
+    clearInterval(timer);
+    current = null;
+    const duration = Date.now() - startedAt;
+    log(`EXIT PC "${game.title}" code=${code} ${Math.round(duration / 1000)}s${error ? ' error=' + error : ''}`);
+    onExit({ game, emulator: emu.id, code, duration, error });
+  };
+  const watch = () => {
+    timer = setInterval(() => {
+      if (childAlive) return;
+      const left = procs.inFolder(dir).filter((p) => !before.has(p.pid));
+      current.pids = left.map((p) => p.pid);
+      empty = left.length ? 0 : empty + 1;
+      if (empty >= 2) finish(0, null);
+    }, WATCH_MS);
+  };
+
+  let child = null;
+  try {
+    child = spawn(exe, [], { cwd: dir, stdio: 'ignore', windowsHide: false });
+  } catch (e) {
+    child = null;
+  }
+  current = { child, game, emu, startedAt, native: true, dir, before, pids: [] };
+  if (child) {
+    child.on('error', (e) => {
+      // Executável que pede administrador (UAC): o Windows abre pelo shell, com o aviso de elevação.
+      if (/EACCES|740|elevation/i.test(`${e.code} ${e.message}`)) {
+        log(`PC elevado via shell: ${e.message}`);
+        childAlive = false;
+        require('electron').shell.openPath(exe);
+        return;
+      }
+      finish(-1, e.message);
+    });
+    child.on('exit', () => (childAlive = false));
+  } else {
+    childAlive = false;
+    require('electron').shell.openPath(exe);
+  }
+  watch();
+  return { ok: true, emulator: emu.id, emulatorName: emu.name };
+}
+
 function start(game, emulatorId, onExit) {
   if (current) return { ok: false, error: 'Já existe um jogo em execução.' };
+  if (game.native) return startNative(game, onExit);
   const sys = config.system(game.system);
   if (!sys) return { ok: false, error: `Sistema "${game.system}" não configurado.` };
   const emu = pickEmulator(sys, emulatorId);
@@ -94,8 +163,11 @@ function start(game, emulatorId, onExit) {
 
 function kill() {
   if (!current) return false;
-  log(`KILL ${current.emu.name} pid=${current.child.pid}`);
-  execFile('taskkill', ['/PID', String(current.child.pid), '/T', '/F'], () => {});
+  const pids = new Set(current.child && current.child.pid ? [current.child.pid] : []);
+  // Jogo de PC: encerra também tudo o que estiver rodando a partir da pasta do jogo.
+  if (current.native) for (const p of procs.inFolder(current.dir)) if (!current.before.has(p.pid)) pids.add(p.pid);
+  log(`KILL ${current.emu.name} pids=${[...pids].join(',')}`);
+  for (const pid of pids) execFile('taskkill', ['/PID', String(pid), '/T', '/F'], () => {});
   return true;
 }
 
@@ -104,7 +176,8 @@ function isRunning() {
 }
 
 function pid() {
-  return current ? current.child.pid : null;
+  if (!current) return null;
+  return (current.child && current.child.pid) || current.pids[0] || null;
 }
 
 module.exports = { start, kill, isRunning, pid, buildArgs };

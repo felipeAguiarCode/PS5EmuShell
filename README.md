@@ -41,6 +41,15 @@ Emuladores\
 
 As capas são baixadas sozinhas. As BIOS você copia para `..\bios\<sistema>`.
 
+## Jogos de PC e pastas de ROMs
+
+O botão **+** no topo do launcher adiciona:
+
+- **Jogo de PC (executável):** escolha o `.exe` num explorador de arquivos que funciona pelo controle, mouse ou teclado (ele já mostra as pastas da Steam, Epic, GOG e Xbox). Dê um nome ao jogo e pronto: a imagem é feita com o ícone do próprio executável. O launcher acompanha o jogo até o último processo da pasta dele fechar, então jogos que abrem um "launcher" antes também funcionam.
+- **Pasta de ROMs:** escolha a pasta e o sistema (o PlayDeck sugere o sistema pelos arquivos e pelo nome da pasta).
+
+Renomear, trocar o executável ou remover: △/Y no jogo, ou Configurações › Sistemas › PC (Windows).
+
 ## Controles
 
 | Botão | Ação |

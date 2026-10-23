@@ -53,6 +53,11 @@ function load() {
       }
     }
   }
+  // Configurações anteriores aos jogos de PC ganham o sistema "PC (Windows)".
+  if (!config.systems.some((s) => s.id === 'pc')) {
+    config.systems.push(defaults.pcSystem());
+    changed = true;
+  }
   if (changed) save(config);
   return config;
 }

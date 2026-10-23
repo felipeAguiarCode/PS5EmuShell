@@ -29,6 +29,7 @@ const TOAST_KINDS = {
   optimizing: { icon: () => Icons.gauge, cat: 'Otimização', busy: true },
   optimized: { icon: () => Icons.sparkles, cat: 'Otimização' },
   avatar: { icon: () => Icons.user, cat: 'Perfil' },
+  pcAdd: { icon: () => ConsoleIcons.pc, cat: 'Jogos de PC' },
   raLogin: { icon: () => Icons.trophy, cat: 'RetroAchievements' },
   raBusy: { icon: () => Icons.trophy, cat: 'RetroAchievements', busy: true },
   raSync: { icon: () => Icons.refresh, cat: 'Troféus', busy: true },
