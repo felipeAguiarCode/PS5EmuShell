@@ -26,7 +26,7 @@ Lê todas as suas ROMs, abre cada jogo no emulador certo e é portable: copie a 
 
 ## Como usar
 
-1. Baixe o `PlayDeck-0.9.0-win-x64.zip` na aba [Releases](https://github.com/felipeAguiarCode/PS5EmuShell/releases).
+1. Baixe o `PlayDeck-<versão>-win-x64.zip` da versão mais recente na aba [Releases](https://github.com/felipeAguiarCode/PS5EmuShell/releases/latest).
 2. Crie uma pasta base (ex.: `C:\Emuladores`) e extraia o zip dentro dela. Vai ficar `C:\Emuladores\launcher`.
 3. Execute `launcher\Iniciar.bat`.
 4. Na primeira vez, o PlayDeck oferece criar as pastas ao lado do launcher e baixar os emuladores:
@@ -49,6 +49,7 @@ As capas são baixadas sozinhas. As BIOS você copia para `..\bios\<sistema>`.
 | ○ / B | Voltar |
 | △ / Y | Opções do jogo |
 | L1 / R1 | Trocar sistema |
+| L2 / R2 | Trocar de aba (Jogos, Biblioteca, Coleções, Troféus) |
 | Options / Start | Configurações (no teclado virtual: confirmar) |
 | Segurar Select + Start | Fechar o jogo e voltar ao launcher |
 

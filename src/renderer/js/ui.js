@@ -137,6 +137,7 @@ const Modal = {
         onKey,
         prevScope: Nav.scope,
         prevFocus: Nav.current,
+        prevLast: Nav.last,
         prevHints: $('#hints').innerHTML,
       };
       this.stack.push(entry);
@@ -163,7 +164,12 @@ const Modal = {
     }
     Nav.scope = entry.prevScope;
     if (entry.prevFocus && entry.prevFocus.isConnected) Nav.focus(entry.prevFocus, { silent: true, noScroll: true });
-    else Nav.setScope(entry.prevScope);
+    else {
+      // O item de antes foi redesenhado enquanto o modal estava aberto: volta para o equivalente.
+      Nav.last = entry.prevLast;
+      const back = Nav.recover();
+      if (back) Nav.focus(back, { silent: true, noScroll: true });
+    }
     entry.resolve(value);
   },
 

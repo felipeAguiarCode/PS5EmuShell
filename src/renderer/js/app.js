@@ -180,14 +180,15 @@ const App = {
   updateHints() {
     if (Modal.top) return;
     if (this.view === 'settings') return Hints.set(Settings.hints());
-    if (this.view === 'collections') return Hints.set(Collections.hints());
-    if (this.view === 'trophies') return Hints.set(Trophies.hints());
+    const tabs = ['lt+rt', 'Abas'];
+    if (this.view === 'collections') return Hints.set([...Collections.hints(), tabs]);
+    if (this.view === 'trophies') return Hints.set([...Trophies.hints(), tabs]);
     const cur = Nav.current;
     const onGame = (this.view === 'home' && (cur === Home.row || (cur && cur.dataset.group === 'actions')) && Home.current() && Home.current().kind === 'game') || (cur && cur.classList.contains('gcard'));
     const h = [];
     if (onGame) h.push(['a', 'Jogar'], ['y', 'Opções'], ['x', 'Favoritar']);
     else h.push(['a', 'Selecionar']);
-    h.push(['lb+rb', 'Sistema']);
+    h.push(['lb+rb', 'Sistema'], tabs);
     if (this.view === 'library') h.push(['b', 'Voltar']);
     Hints.set(h);
   },
@@ -514,6 +515,10 @@ const App = {
       if (btn === 'a') Nav.activate();
       return;
     }
+    if (btn === 'lt' || btn === 'rt') {
+      this.cycleTab(btn === 'rt' ? 1 : -1);
+      return;
+    }
     if (this.view === 'library' && Library.handleButton(btn)) return;
     if (this.view === 'collections' && Collections.handleButton(btn)) return;
     if (this.view === 'trophies' && Trophies.handleButton(btn)) return;
@@ -552,6 +557,16 @@ const App = {
         if (this.view !== 'home') this.setView('home');
         break;
     }
+  },
+
+  // L2/R2 (LT/RT): aba anterior/próxima — Jogos, Biblioteca, Coleções, Troféus.
+  // O foco vai direto para o conteúdo da aba, não para a barra superior.
+  cycleTab(step) {
+    const tabs = ['home', 'library', 'collections', 'trophies'];
+    const next = tabs[tabs.indexOf(this.view) + step];
+    if (!next) return Sound.edge();
+    Sound.move();
+    this.setView(next);
   },
 
   focusedGame() {

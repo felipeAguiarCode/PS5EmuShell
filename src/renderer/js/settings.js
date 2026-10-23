@@ -1185,7 +1185,7 @@ const Settings = {
           ['y', 'Opções do jogo'],
           ['x', 'Favoritar'],
           ['lb+rb', 'Sistema anterior / próximo'],
-          ['lt+rt', 'Página anterior / próxima na biblioteca'],
+          ['lt+rt', 'Aba anterior / próxima (Jogos, Biblioteca, Coleções, Troféus)'],
           ['start', 'Configurações'],
           ['back', 'Buscar'],
         ].map(([b, l]) => ({ type: 'info', label: l, glyph: b })),

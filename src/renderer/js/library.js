@@ -152,16 +152,6 @@ const Library = {
   },
 
   // Pula uma "página" de linhas na grade (LT/RT).
-  page(delta) {
-    const cards = $$('.gcard', this.grid);
-    if (!cards.length) return;
-    const cur = cards.indexOf(Nav.current);
-    const cols = Math.max(1, Math.round(this.grid.clientWidth / (cards[0].offsetWidth + 26)));
-    const rows = Math.max(1, Math.floor(this.grid.clientHeight / (cards[0].offsetHeight + 30)));
-    const next = Math.max(0, Math.min(cards.length - 1, (cur < 0 ? 0 : cur) + delta * cols * rows));
-    Nav.focus(cards[next]);
-  },
-
   async chooseSort() {
     const v = await Modal.menu({
       title: 'Ordenar por',
@@ -193,10 +183,6 @@ const Library = {
   handleButton(btn) {
     if (btn === 'lb' || btn === 'rb') {
       this.cycleFilter(btn === 'rb' ? 1 : -1);
-      return true;
-    }
-    if (btn === 'lt' || btn === 'rt') {
-      this.page(btn === 'rt' ? 1 : -1);
       return true;
     }
     if (btn === 'b' && this.query) {
