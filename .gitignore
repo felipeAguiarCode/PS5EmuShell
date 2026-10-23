@@ -1,0 +1,10 @@
+# Dependências e builds
+node_modules/
+app/
+dist/
+
+# Dados pessoais (config, tempo de jogo, login do RetroAchievements, cache)
+data/
+
+*.log
+*.tmp

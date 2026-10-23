@@ -1,0 +1,59 @@
+{
+  "name": "playdeck",
+  "productName": "PlayDeck",
+  "version": "0.9.0",
+  "description": "Launcher de emuladores estilo PS5, controlado por controle (Xbox/XInput, DualShock 4 e DualSense)",
+  "main": "src/main/main.js",
+  "author": "Felipe Aguiar",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win dir"
+  },
+  "build": {
+    "appId": "local.playdeck.launcher",
+    "productName": "PlayDeck",
+    "directories": {
+      "output": "app"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!node_modules/7zip-bin/mac/**",
+      "!node_modules/7zip-bin/linux/**",
+      "!node_modules/7zip-bin/win/arm64/**",
+      "!node_modules/7zip-bin/win/ia32/**",
+      "!node_modules/node-hid/prebuilds/HID-darwin*/**",
+      "!node_modules/node-hid/prebuilds/HID*-linux*/**",
+      "!node_modules/node-hid/src/**",
+      "!node_modules/node-hid/hidapi/**"
+    ],
+    "asarUnpack": [
+      "node_modules/koffi/**",
+      "node_modules/7zip-bin/**",
+      "node_modules/node-hid/**"
+    ],
+    "npmRebuild": false,
+    "win": {
+      "target": "dir",
+      "signAndEditExecutable": false,
+      "icon": "src/icon.ico"
+    },
+    "afterPack": "build/afterPack.js"
+  },
+  "dependencies": {
+    "7zip-bin": "^5.2.0",
+    "koffi": "^3.3.3",
+    "node-hid": "^3.4.0"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3",
+    "rcedit": "^5.0.2"
+  },
+  "allowScripts": {
+    "koffi@3.3.3": true,
+    "electron-winstaller@5.4.0": true,
+    "electron@45.0.0": true
+  }
+}
