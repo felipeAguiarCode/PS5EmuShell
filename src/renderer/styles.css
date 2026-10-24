@@ -23,7 +23,7 @@
   --ease: cubic-bezier(0.2, 0.85, 0.25, 1);
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --pad: 72px;
-  --tile: 124px;
+  --tile: 116px;
   --sys: #2f62e0;
 }
 
@@ -327,32 +327,8 @@ body.ready #app { opacity: 1; }
 .rl-sub { font-size: 15px; color: var(--fg-dim); margin-top: 4px; }
 
 #hero { padding: 6px var(--pad) 0; flex: 1; min-height: 0; display: flex; flex-direction: column; }
-#hero.swap .hero-title, #hero.swap .hero-meta, #hero.swap .hero-badge { animation: heroIn 0.45s var(--ease) both; }
+#hero.swap .hero-meta { animation: heroIn 0.45s var(--ease) both; }
 @keyframes heroIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
-.hero-badge {
-  align-self: flex-start;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--sys) 55%, transparent);
-  border: 1px solid color-mix(in srgb, var(--sys) 80%, #fff 20%);
-  margin-bottom: 14px;
-}
-.hero-title {
-  font-size: clamp(40px, 4.6vw, 76px);
-  font-weight: 700;
-  line-height: 1.02;
-  margin: 0 0 14px;
-  max-width: 62vw;
-  letter-spacing: -0.5px;
-  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 .hero-meta { display: flex; gap: 22px; color: var(--fg-dim); font-size: 17px; margin-bottom: 30px; flex-wrap: wrap; }
 .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
 .hero-meta .star { color: #ffd34d; }
@@ -1098,7 +1074,7 @@ span.glyph.wide {
 @keyframes shapeIn { to { opacity: 1; transform: none; } }
 
 @media (max-width: 1280px) {
-  :root { --pad: 44px; --tile: 108px; }
+  :root { --pad: 44px; --tile: 100px; }
   .hero-cards .card { width: 200px; }
   .lib-side, .set-side { width: 240px; }
 }
@@ -1123,9 +1099,7 @@ body { letter-spacing: 0.1px; }
 .chip .count { font-size: 15px; font-weight: 300; }
 .rl-title { font-size: 28px; font-weight: 400; }
 .rl-sub { font-size: 17px; font-weight: 300; }
-.hero-badge { font-size: 14px; font-weight: 600; letter-spacing: 1.2px; }
-.hero-title { font-size: clamp(44px, 4.4vw, 76px); font-weight: 300; letter-spacing: -0.6px; line-height: 1.14; padding-bottom: 0.06em; flex-shrink: 0; }
-.hero-badge, .hero-meta, .hero-actions { flex-shrink: 0; }
+.hero-meta, .hero-actions { flex-shrink: 0; }
 .hero-meta { font-size: 20px; font-weight: 300; }
 .btn-play { font-size: 23px; font-weight: 500; letter-spacing: 0.2px; }
 .btn-pill { font-size: 18px; font-weight: 400; }
@@ -1234,9 +1208,8 @@ body.theme-light .btn-round.focused, body.theme-light .btn-round:hover { backgro
 body.theme-light .btn-round.on { color: #c98a00; }
 
 /* tela inicial */
-body.theme-light .hero-title, body.theme-light .rl-title { text-shadow: none; }
+body.theme-light .rl-title { text-shadow: none; }
 body.theme-light .hero-meta .star { color: #c98a00; }
-body.theme-light .hero-badge { color: #fff; }
 body.theme-light .card, body.theme-light .perf-card, body.theme-light .perf-top, body.theme-light .ra-head, body.theme-light .tr-head, body.theme-light .tr-detail-head { background: var(--surface); border-color: transparent; box-shadow: var(--shadow); }
 body.theme-light .card .k { color: var(--fg-faint); }
 body.theme-light .tile.lib-tile { background: rgba(0, 0, 0, 0.08); color: var(--fg); }
@@ -1424,3 +1397,91 @@ body.theme-light .fb-place.focused, body.theme-light .fb-item.focused, body.them
 .btn-pill.danger.focused, .btn-pill.danger:hover { background: #ff5d5d; color: #fff; }
 body.theme-light .btn-pill.danger { color: #c93434; }
 body.theme-light .btn-pill.danger.focused, body.theme-light .btn-pill.danger:hover { background: #c93434; color: #fff; }
+/* ===================== Tela inicial no padrão do PS5 =====================
+   Tiles quadrados alinhados pelo topo; o selecionado cresce com um anel branco afastado da capa;
+   abaixo dos tiles seguintes ficam a caixinha da plataforma e o nome do jogo. */
+#row-wrap { height: 226px; padding-top: 14px; }
+.tile { border-radius: 16px; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42); }
+.tile .ph { font-size: 13px; padding: 10px; }
+.tile .ph .sys { top: 9px; left: 10px; font-size: 10px; }
+.tile.sel { box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6); }
+/* O tile é escalado (--s): espessura e afastamento do anel são compensados para ficarem constantes. */
+/* Contorno branco com glow leve: o brilho nasce na linha (spread = afastamento + espessura). */
+.tile.sel {
+  outline: calc(2px / var(--s, 1)) solid rgba(255, 255, 255, 0.55);
+  outline-offset: calc(5px / var(--s, 1));
+}
+#row.focused .tile.sel {
+  outline: calc(3px / var(--s, 1)) solid #fff;
+  outline-offset: calc(5px / var(--s, 1));
+  box-shadow: 0 0 calc(22px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.32), 0 16px 36px rgba(0, 0, 0, 0.6);
+  animation: tileRing 2.6s ease-in-out infinite;
+}
+@keyframes tileRing {
+  0%, 100% { box-shadow: 0 0 calc(16px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.22), 0 16px 36px rgba(0, 0, 0, 0.6); }
+  50% { box-shadow: 0 0 calc(30px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.45), 0 16px 36px rgba(0, 0, 0, 0.6); }
+}
+body.no-motion #row.focused .tile.sel { animation: none; }
+
+#row-label { display: flex; align-items: center; gap: 14px; max-width: none; white-space: nowrap; }
+.rl-badge {
+  flex: none;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  line-height: 1;
+  padding: 6px 10px 5px;
+  border-radius: 7px;
+  color: #0b0d12;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+.rl-badge:empty { display: none; }
+.rl-title { min-width: 0; font-size: 31px; font-weight: 300; letter-spacing: -0.2px; line-height: 1.2; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
+.rl-extra { flex: none; display: flex; align-items: center; color: var(--fg-dim); font-size: 18px; font-weight: 300; }
+.rl-fav { width: 22px; height: 22px; color: #ffc93c; }
+.rl-fav svg { width: 100%; height: 100%; }
+body.theme-light .rl-badge { color: #fff; background: #15171d; box-shadow: none; }
+body.theme-light .rl-title { text-shadow: none; }
+body.theme-light #row.focused .tile.sel { outline-color: #15171d; }
+
+/* ---------- Menu do topo: ícones (padrão) ou nomes ---------- */
+.tab { display: inline-flex; align-items: center; gap: 10px; }
+.tab-ico { display: none; width: 30px; height: 30px; flex: none; }
+.tab-ico svg { width: 100%; height: 100%; }
+.tab-hint { display: none; }
+body.nav-icons .tabs { align-items: center; gap: 22px; }
+body.nav-icons .tab { position: relative; padding: 9px 12px; border-radius: 14px; color: rgba(255, 255, 255, 0.55); transition: color 0.2s, background 0.2s; }
+body.nav-icons .tab-ico { display: block; }
+body.nav-icons .tab-lbl {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  margin-left: -10px;
+  font-size: 22px;
+  transition: max-width 0.3s var(--ease), opacity 0.2s, margin 0.3s var(--ease);
+}
+/* Em foco (controle no topo ou mouse em cima) o nome aparece ao lado do ícone, como no PS5. */
+body.nav-icons .tab.focused .tab-lbl, body.nav-icons .tab:hover .tab-lbl { max-width: 220px; opacity: 1; margin-left: 0; }
+body.nav-icons .tab.active { color: #fff; }
+body.nav-icons .tab.active::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+body.nav-icons .tab.focused, body.nav-icons .tab:hover { color: #fff; background: var(--glass); }
+body.nav-icons .tab-hint { display: inline-flex; align-items: center; cursor: pointer; opacity: 0.85; }
+body.nav-icons .tab-hint img.glyph, body.nav-icons .tab-hint .glyph { height: 26px; }
+body.theme-light.nav-icons .tab { color: rgba(21, 23, 29, 0.5); }
+body.theme-light.nav-icons .tab.active, body.theme-light.nav-icons .tab.focused, body.theme-light.nav-icons .tab:hover { color: var(--fg); }
+/* Capa personalizada da coleção: a imagem ocupa o card inteiro. */
+.mosaic.custom { display: block; }
+.mosaic.custom img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+body.no-covers .mosaic.custom img { display: block; }

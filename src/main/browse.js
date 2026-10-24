@@ -123,6 +123,8 @@ async function detectSystems(dir, systems) {
       } else {
         const ext = path.extname(e.name).toLowerCase();
         if (ext) counts[ext] = (counts[ext] || 0) + 1;
+        const byName = 'name:' + e.name.toLowerCase();
+        counts[byName] = (counts[byName] || 0) + 1;
       }
     }
   };
@@ -144,6 +146,8 @@ async function detectSystems(dir, systems) {
     .map((s) => {
       const exts = (s.extensions || []).map((e) => (e.startsWith('.') ? e : '.' + e).toLowerCase());
       const found = exts.filter((e) => counts[e]).map((e) => ({ ext: e, n: counts[e] }));
+      // Jogos em pasta (PS3/PS4): contam pelo nome do arquivo (EBOOT.BIN).
+      for (const n of s.gameFiles || []) if (counts['name:' + n.toLowerCase()]) found.push({ ext: n, n: counts['name:' + n.toLowerCase()] });
       const already = (s.romDirs || []).some((r) => config.resolve(r).toLowerCase() === full);
       return { id: s.id, name: s.name, color: s.color, files: found.reduce((a, f) => a + f.n, 0), hint: hint(s), exts: found.sort((a, b) => b.n - a.n), already };
     })

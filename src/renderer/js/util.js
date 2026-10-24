@@ -70,6 +70,26 @@ const ConsoleIcons = {
   nes: svg('<rect x="1.5" y="7" width="21" height="11" rx="1"/><path d="M4 7v3.5h16V7"/><path d="M3.5 13.5h4.5M3.5 15.5h4.5"/><rect x="10" y="13" width="1.8" height="1.2" rx=".3"/><rect x="12.6" y="13" width="1.8" height="1.2" rx=".3"/><path d="M16 15.5h4.5"/>'),
   // SNES: console com corpo arredondado, entrada do cartucho e botões
   snes: svg('<path d="M4.5 7h15a3 3 0 0 1 3 3v5.5a2.5 2.5 0 0 1-2.5 2.5H4a2.5 2.5 0 0 1-2.5-2.5V10a3 3 0 0 1 3-3z"/><rect x="7.5" y="5" width="9" height="4" rx=".8"/><circle cx="6" cy="13.5" r="1.3"/><circle cx="18" cy="13.5" r="1.3"/><path d="M10 14.2h1.2M12.8 14.2H14"/>'),
+  // Mega Drive: console baixo com a entrada do cartucho em círculo
+  md: svg('<rect x="1.5" y="8" width="21" height="9" rx="2.5"/><circle cx="12" cy="12.5" r="3.6"/><path d="M8.4 12.5H4.5M19.5 12.5h-3.9"/><circle cx="12" cy="12.5" r="1"/>'),
+  // Nintendo 64: console com o slot do cartucho e as entradas de controle
+  n64: svg('<path d="M3 9.5 6 6h12l3 3.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17z"/><rect x="8" y="7.5" width="8" height="3" rx=".6"/><path d="M6 15h1.5M9 15h1.5M13.5 15H15M16.5 15H18"/>'),
+  // Dreamcast: console quadrado com tampa redonda
+  dc: svg('<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="11" r="4.6"/><path d="M10.4 9.5a2 2 0 1 1 1.6 3.3"/><path d="M6.5 17.5h3M14.5 17.5h3"/>'),
+  // Wii: console fino em pé e o controle
+  wii: svg('<rect x="5" y="2.5" width="7" height="19" rx="1.5"/><path d="M6.5 6h4"/><rect x="15.5" y="6" width="3.5" height="15.5" rx="1.75"/><circle cx="17.25" cy="9" r=".7" fill="currentColor"/>'),
+  // Wii U: GamePad com tela
+  wiiu: svg('<rect x="1.5" y="6" width="21" height="12" rx="4"/><rect x="7" y="8" width="10" height="8" rx=".8"/><circle cx="4.4" cy="10.3" r="1"/><circle cx="19.6" cy="10.3" r="1"/><path d="M3.6 13.8h1.6M4.4 13v1.6"/>'),
+  // Nintendo 3DS: dobrável com tela de cima larga e direcional analógico
+  n3ds: svg('<rect x="3" y="2" width="18" height="9.5" rx="1.6"/><rect x="5.5" y="3.6" width="13" height="6.3" rx=".5"/><rect x="4.5" y="12.8" width="15" height="9.2" rx="1.6"/><rect x="9" y="14.2" width="6" height="5" rx=".4"/><circle cx="6.7" cy="15.4" r="1"/><circle cx="17.4" cy="16.2" r=".5" fill="currentColor"/>'),
+  // Xbox: console grande com o círculo central
+  xbox: svg('<rect x="1.5" y="6.5" width="21" height="11" rx="2"/><circle cx="12" cy="12" r="3.2"/><path d="m10.4 10.4 3.2 3.2M13.6 10.4l-3.2 3.2"/><path d="M4 15h3"/>'),
+  // Xbox 360: console com as laterais côncavas
+  x360: svg('<path d="M3 7.5c3 1 15 1 18 0v9c-3-1-15-1-18 0z"/><circle cx="12" cy="12" r="2.4"/><path d="M5.5 10.5v3M18.5 10.5v3"/>'),
+  // PlayStation 3: console slim inclinado
+  ps3: svg('<path d="M2.5 9.5 5 6h16.5L19 9.5z"/><path d="M2.5 9.5V17h16.5V9.5M19 17l2.5-3.5V6"/><path d="M5 13.3h6"/>'),
+  // PlayStation 4: console em camadas
+  ps4: svg('<path d="M2 8.5 4.5 6H22l-2.5 2.5z"/><path d="M2 8.5V18h17.5V8.5M19.5 18 22 15.5V6"/><path d="M2 12.5h17.5"/>'),
   // PC (Windows): monitor com base
   pc: svg('<rect x="2" y="3.5" width="20" height="13" rx="1.6"/><path d="M8.5 20.5h7M12 16.5v4"/><path d="M5.5 13.5h4"/>'),
   generic: svg('<path d="M6 11h4M8 9v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="18" cy="10" r=".8" fill="currentColor"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6l-.6 6.2A2.8 2.8 0 0 0 7 17l1.8-2h6.4l1.8 2a2.8 2.8 0 0 0 4.9-2.2l-.6-6.2A4 4 0 0 0 17.3 5z"/>'),

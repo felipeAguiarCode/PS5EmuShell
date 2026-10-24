@@ -58,9 +58,12 @@ const Collections = {
   cardHtml(c) {
     const games = this.games(c);
     const covers = App.config.appearance.coverArt === false ? [] : games.filter((g) => g.cover).slice(0, 4);
-    const mosaic = covers.length
-      ? `<div class="mosaic n${covers.length}">${covers.map((g) => `<img src="${esc(g.cover)}" alt="" decoding="async" loading="lazy">`).join('')}</div>`
-      : `<div class="mosaic empty">${Icons.library}</div>`;
+    // Capa personalizada (escolhida pelo usuário) tem prioridade sobre o mosaico das capas dos jogos.
+    const mosaic = c.coverUrl
+      ? `<div class="mosaic custom"><img src="${esc(c.coverUrl)}" alt="" decoding="async"></div>`
+      : covers.length
+        ? `<div class="mosaic n${covers.length}">${covers.map((g) => `<img src="${esc(g.cover)}" alt="" decoding="async" loading="lazy">`).join('')}</div>`
+        : `<div class="mosaic empty">${Icons.library}</div>`;
     const systems = [...new Set(games.map((g) => (App.system(g.system) || {}).shortName).filter(Boolean))].join(' · ');
     return (
       `<button class="ccard focusable" data-group="cgrid" data-id="${esc(c.id)}"><div class="stack">${mosaic}</div>` +
@@ -76,6 +79,7 @@ const Collections = {
     $('#coll-count').textContent = `${games.length} ${games.length === 1 ? 'jogo' : 'jogos'}`;
     $('#coll-tools').innerHTML =
       `<button class="btn-pill focusable" data-group="colltools" data-cmd="add"><span class="ico">${Icons.plus}</span>Adicionar jogos</button>` +
+      `<button class="btn-pill focusable" data-group="colltools" data-cmd="cover"><span class="ico">${Icons.image}</span>Capa</button>` +
       `<button class="btn-pill focusable" data-group="colltools" data-cmd="rename"><span class="ico">${Icons.gear}</span>Renomear</button>` +
       `<button class="btn-pill focusable" data-group="colltools" data-cmd="delete"><span class="ico">${Icons.trash}</span>Excluir</button>`;
     this.body.innerHTML = games.length
@@ -118,6 +122,7 @@ const Collections = {
     Sound.select();
     if (cmd === 'new') this.create();
     else if (cmd === 'add') this.pickGames(this.get(this.openId));
+    else if (cmd === 'cover') this.coverMenu(this.get(this.openId));
     else if (cmd === 'rename') this.rename(this.get(this.openId));
     else if (cmd === 'delete') this.remove(this.get(this.openId));
   },
@@ -175,8 +180,48 @@ const Collections = {
     this.render();
   },
 
+  // Capa personalizada: imagem escolhida no explorador do launcher (copiada para data/collections).
+  async coverMenu(col) {
+    const v = await Modal.menu({
+      title: 'Capa da coleção',
+      sub: col.coverUrl ? `${col.name} · usando imagem personalizada` : `${col.name} · usando as capas dos jogos`,
+      items: [
+        { label: col.coverUrl ? 'Trocar imagem de capa' : 'Escolher imagem de capa', icon: Icons.image, value: 'pick' },
+        ...(col.coverUrl ? [{ label: 'Voltar às capas dos jogos', icon: Icons.refresh, value: 'clear' }] : []),
+      ],
+    });
+    if (!v) return;
+    let file = null;
+    if (v === 'pick') {
+      file = await FileBrowser.open({ mode: 'image', title: `Capa de “${col.name}”` });
+      if (!file) return;
+    }
+    Object.assign(col, await api.invoke('collections:setCover', col.id, file));
+    this.save();
+    this.render();
+    Toast.show(file ? 'Capa da coleção definida' : 'Capa personalizada removida', col.name, { kind: 'collectionNew', image: col.coverUrl || undefined });
+  },
+
+  // Opções de uma coleção a partir da grade (△/Y no card).
+  async options(col) {
+    const v = await Modal.menu({
+      title: col.name,
+      items: [
+        { label: 'Abrir', icon: Icons.library, value: 'open' },
+        { label: 'Capa', icon: Icons.image, right: col.coverUrl ? 'personalizada' : null, value: 'cover' },
+        { label: 'Renomear', icon: Icons.gear, value: 'rename' },
+        { label: 'Excluir', icon: Icons.trash, value: 'delete' },
+      ],
+    });
+    if (v === 'open') this.open(col.id);
+    else if (v === 'cover') this.coverMenu(col);
+    else if (v === 'rename') this.rename(col);
+    else if (v === 'delete') this.remove(col);
+  },
+
   async remove(col) {
     if (!(await Modal.confirm('Excluir coleção?', `“${col.name}” será excluída. Os jogos continuam na biblioteca.`, { ok: 'Excluir' }))) return;
+    if (col.cover) api.invoke('collections:setCover', col.id, null);
     this.list = this.list.filter((c) => c !== col);
     this.openId = null;
     this.save();
@@ -259,12 +304,19 @@ const Collections = {
       this.close();
       return true;
     }
+    const cur = Nav.current;
+    if (btn === 'y' && cur && cur.classList.contains('ccard') && cur.dataset.id) {
+      Sound.select();
+      this.options(this.get(cur.dataset.id));
+      return true;
+    }
     return false;
   },
 
   hints() {
     const cur = Nav.current;
     if (cur && cur.classList.contains('gcard')) return [['a', 'Jogar'], ['y', 'Opções'], ['b', 'Voltar']];
+    if (cur && cur.classList.contains('ccard') && cur.dataset.id) return [['a', 'Abrir'], ['y', 'Opções'], ['b', 'Voltar']];
     return [['a', 'Abrir'], ['b', 'Voltar']];
   },
 };

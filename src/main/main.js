@@ -242,10 +242,25 @@ function setupIpc() {
   ipcMain.handle('config:get', () => config.get());
 
   // Coleções: [{ id, name, games: [gameId], created }]
-  ipcMain.handle('collections:get', () => config.readJson(paths.file('collections.json'), []));
+  // Capa personalizada da coleção: data/collections/<id>.<ext>; no JSON fica só o nome do arquivo.
+  const collectionCoverUrl = (file) => {
+    const f = file && paths.file('collections', file);
+    if (!f || !fs.existsSync(f)) return null;
+    return pathToFileURL(f).href + '?v=' + Math.round(fs.statSync(f).mtimeMs);
+  };
+  ipcMain.handle('collections:get', () => config.readJson(paths.file('collections.json'), []).map((c) => ({ ...c, coverUrl: collectionCoverUrl(c.cover) })));
   ipcMain.handle('collections:save', (_e, list) => {
-    config.writeJson(paths.file('collections.json'), list);
+    config.writeJson(paths.file('collections.json'), list.map(({ coverUrl, ...c }) => c));
     return true;
+  });
+  ipcMain.handle('collections:setCover', (_e, id, file) => {
+    const dir = paths.ensure(paths.file('collections'));
+    for (const f of fs.readdirSync(dir)) if (path.parse(f).name === id) fs.rmSync(path.join(dir, f), { force: true });
+    if (!file) return { cover: null, coverUrl: null };
+    const src = config.resolve(file);
+    const ext = (path.extname(src).toLowerCase().match(/^\.(png|jpe?g|webp)$/) || ['.png'])[0];
+    fs.copyFileSync(src, path.join(dir, id + ext));
+    return { cover: id + ext, coverUrl: collectionCoverUrl(id + ext) };
   });
 
   ipcMain.handle('config:save', (_e, next) => {

@@ -53,6 +53,18 @@ function load() {
       }
     }
   }
+  // Avatar que não existe mais (a pasta assets/avatars foi trocada): usa o padrão ou o primeiro disponível.
+  if (config.avatar && !config.avatar.startsWith('custom:')) {
+    const dir = path.join(paths.root, 'assets', 'avatars');
+    if (!fs.existsSync(path.join(dir, config.avatar))) {
+      let items = [];
+      try {
+        items = fs.readdirSync(dir).filter((f) => /\.(png|jpe?g|webp|gif)$/i.test(f)).sort();
+      } catch {}
+      config.avatar = items.includes(d.avatar) ? d.avatar : items[0] || '';
+      changed = true;
+    }
+  }
   // Configurações anteriores aos jogos de PC ganham o sistema "PC (Windows)".
   if (!config.systems.some((s) => s.id === 'pc')) {
     config.systems.push(defaults.pcSystem());

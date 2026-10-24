@@ -29,6 +29,7 @@ const App = {
     this.defaultOptimize = data.defaultOptimize;
     this.setGames(data.library, true);
 
+    this.buildTabs();
     $('[data-cmd="add"]').innerHTML = Icons.plus;
     $('[data-cmd="search"]').innerHTML = Icons.search;
     $('[data-cmd="settings"]').innerHTML = Icons.gear;
@@ -96,10 +97,27 @@ const App = {
     Toast.show('Biblioteca atualizada', `${list.length} ${list.length === 1 ? 'jogo encontrado' : 'jogos encontrados'}.`, { kind: 'library' });
   },
 
+  // Abas do topo: ícone + nome. Em Aparência dá para escolher só ícones (padrão do PS5) ou só nomes.
+  buildTabs() {
+    const icons = { home: Icons.gamepad, library: Icons.grid, collections: Icons.library, trophies: Icons.trophy };
+    $$('.tab').forEach((t) => {
+      const label = t.textContent.trim();
+      t.title = label;
+      t.setAttribute('aria-label', label);
+      t.innerHTML = `<span class="tab-ico">${icons[t.dataset.view]}</span><span class="tab-lbl">${esc(label)}</span>`;
+    });
+    const tabs = $('.tabs');
+    tabs.insertAdjacentHTML('afterbegin', `<span class="tab-hint" data-step="-1"></span>`);
+    tabs.insertAdjacentHTML('beforeend', `<span class="tab-hint" data-step="1"></span>`);
+    $$('.tab-hint', tabs).forEach((h) => h.addEventListener('click', () => this.cycleTab(+h.dataset.step)));
+  },
+
   // Configurações › Aparência: tema, animações, imagem de fundo e miniaturas.
   applyAppearance() {
     const a = this.config.appearance || {};
     const b = document.body.classList;
+    b.toggle('nav-icons', a.topNav !== 'labels');
+    $$('.tab-hint').forEach((h) => (h.innerHTML = glyph(h.dataset.step < 0 ? 'lt' : 'rt')));
     b.toggle('theme-light', a.theme === 'light');
     b.toggle('no-motion', a.motion === false);
     b.toggle('no-covers', a.coverArt === false);
@@ -119,6 +137,7 @@ const App = {
     this.padType = type;
     if (this.config.buttonGlyphs !== 'auto') return;
     document.body.classList.toggle('glyph-ps', glyphStyle() === 'playstation');
+    $$('.tab-hint').forEach((h) => (h.innerHTML = glyph(h.dataset.step < 0 ? 'lt' : 'rt')));
     if (Modal.top) return;
     this.updateHints();
     if (this.view === 'settings') Settings.render();

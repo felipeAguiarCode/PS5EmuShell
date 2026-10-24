@@ -8,6 +8,17 @@ Launcher de emuladores em tela cheia, no estilo do PS5, feito para jogar com con
 Xbox/XInput, DualShock 4 (PS4) e DualSense (PS5), via USB ou Bluetooth, sem precisar de Steam ou DS4Windows.
 Lê todas as suas ROMs, abre cada jogo no emulador certo e é portable: copie a pasta e jogue.
 
+<p align="center">
+  <a href="https://github.com/felipeAguiarCode/PS5EmuShell/releases/latest">
+    <img src="https://img.shields.io/badge/%E2%AC%87%20DOWNLOAD-Baixar%20a%20%C3%BAltima%20vers%C3%A3o-2f7bff?style=for-the-badge&labelColor=0b1230" alt="Download" height="56">
+  </a>
+  <br>
+  <a href="https://github.com/felipeAguiarCode/PS5EmuShell/releases/latest">
+    <img src="https://img.shields.io/github/v/release/felipeAguiarCode/PS5EmuShell?label=vers%C3%A3o&style=flat-square&color=2f7bff" alt="Versão mais recente">
+  </a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011%20(64%20bits)-0b1230?style=flat-square" alt="Windows 10 e 11">
+</p>
+
 ▶️ **[Vídeo de demonstração](docs/media/ps5-emu-shell-demo.mp4)** (1 min 24 s)
 
 ## Telas
@@ -16,7 +27,7 @@ Lê todas as suas ROMs, abre cada jogo no emulador certo e é portable: copie a 
 
 ![Tela de jogos](docs/media/tela-de-jogos.gif)
 
-**Coleções** — agrupe os jogos de uma saga
+**Coleções** — agrupe os jogos de uma saga, com capa automática (as capas dos jogos) ou uma imagem sua (△/Y › Capa)
 
 ![Coleções](docs/media/colecoes.gif)
 
@@ -30,7 +41,7 @@ Lê todas as suas ROMs, abre cada jogo no emulador certo e é portable: copie a 
 
 ## Como usar
 
-1. Baixe o `PS5EmuShell-<versão>-win-x64.zip` da versão mais recente na aba [Releases](https://github.com/felipeAguiarCode/PS5EmuShell/releases/latest).
+1. Clique em **[Download](https://github.com/felipeAguiarCode/PS5EmuShell/releases/latest)** e baixe o `PS5EmuShell-<versão>-win-x64.zip`.
 2. Crie uma pasta base (ex.: `C:\Emuladores`) e extraia o zip dentro dela. Vai ficar `C:\Emuladores\launcher`.
 3. Execute `launcher\Iniciar.bat`.
 4. Na primeira vez, o PS5 Emu Shell oferece criar as pastas ao lado do launcher e baixar os emuladores:
@@ -42,6 +53,27 @@ Emuladores\
 ```
 
 5. Coloque as ROMs em `roms\<sistema>` (`psx`, `ps2`, `psp`, `nds`, `gc`, `gba`, `snes`…).
+
+### Sistemas e emuladores
+
+Já vêm configurados PS1 (DuckStation), PS2 (PCSX2), PSP (PPSSPP), Nintendo DS (melonDS) e GameCube (Dolphin).
+Em **Configurações › Instalação › Adicionar mais sistemas** dá para incluir:
+
+| Sistema | Emulador |
+|---|---|
+| Game Boy Advance / Color | mGBA, RAVBA |
+| NES · Super Nintendo | Mesen, RANes, FCEUX · Snes9x, RASnes9x |
+| Mega Drive / Genesis | ares |
+| Nintendo 64 | Rosalie's Mupen GUI, Project64 |
+| Dreamcast | Flycast |
+| Wii · Wii U | Dolphin · Cemu |
+| Nintendo 3DS | Azahar |
+| Xbox · Xbox 360 | xemu · Xenia Canary |
+| PlayStation 3 | RPCS3 |
+| PlayStation 4 | shadPS4 |
+
+Cada um pode **baixar a última versão** da fonte oficial ou **apontar para o seu próprio executável**. Se instalar por fora, extraia em `cores\<sistema>\<emulador>` e use **Sincronizar**.
+Jogos de PS3 e PS4 ficam em pastas (com `EBOOT.BIN` / `eboot.bin`): coloque cada pasta de jogo em `roms\ps3` ou `roms\ps4` e o nome é lido do `PARAM.SFO`. Firmware, BIOS e chaves de cada emulador são configurados no próprio emulador.
 
 As capas são baixadas sozinhas. As BIOS você copia para `..\bios\<sistema>`.
 

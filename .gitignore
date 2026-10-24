@@ -8,3 +8,6 @@ data/
 
 *.log
 *.tmp
+
+# Pastas de trabalho de outras ferramentas (ex.: sessões do Claude Code abertas em subpastas)
+.claude/

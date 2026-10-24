@@ -480,15 +480,34 @@ const Settings = {
 
   async addCatalogSystem(item) {
     if (item.added) return Toast.show(`${item.name} já foi adicionado`, 'Veja em Sistemas e emuladores.', { kind: 'info' });
-    if (!(await Modal.confirm(`Adicionar ${item.name}?`, `Cria a pasta roms/${item.id} e baixa o ${item.emulators[0]} (emulador padrão).`, { ok: 'Adicionar e baixar' }))) return;
+    const how = await Modal.menu({
+      title: `Adicionar ${item.name}`,
+      sub: `Cria a pasta roms/${item.id}. Emulador padrão: ${item.emulators[0]}${item.source ? ` (${item.source})` : ''}.`,
+      items: [
+        { label: `Adicionar e baixar o ${item.emulators[0]}`, icon: Icons.download, right: 'última versão', value: 'download' },
+        { label: 'Adicionar e apontar o meu emulador', icon: Icons.folder, right: '.exe já instalado', value: 'point' },
+        { label: 'Só adicionar o sistema', icon: Icons.plus, value: 'add' },
+      ],
+    });
+    if (!how) return;
+    let exe = null;
+    if (how === 'point') {
+      exe = await FileBrowser.open({ mode: 'exe', title: `Executável do ${item.emulators[0]} (ou de outro emulador de ${item.name})` });
+      if (!exe) return;
+    }
     await api.invoke('setup:addSystem', item.id);
     App.config = await api.invoke('config:get');
+    const sys = App.config.systems.find((s) => s.id === item.id);
+    if (exe) {
+      const emuDef = sys.emulators.find((e) => e.id === sys.defaultEmulator) || sys.emulators[0];
+      emuDef.exe = await api.invoke('path:portable', exe);
+      await api.invoke('config:save', App.config);
+    }
     this.systemsDirty = true;
     await this.reloadSetup();
     Toast.show(`${item.name} adicionado`, `Coloque as ROMs em roms/${item.id}.`, { kind: 'systemAdd' });
-    const sys = App.config.systems.find((s) => s.id === item.id);
     const emu = this.setupStatus.emulators.find((e) => e.system === item.id && e.id === sys.defaultEmulator);
-    if (emu && !emu.installed) await this.installEmulator(emu, { confirm: false });
+    if (how === 'download' && emu && !emu.installed) await this.installEmulator(emu, { confirm: false });
   },
 
   async reloadSetup() {
@@ -801,12 +820,17 @@ const Settings = {
           run: () => this.installMissing(),
         },
         { type: 'section', label: 'Adicionar mais sistemas' },
+        {
+          type: 'info',
+          label: 'Baixe a última versão ou use o seu emulador',
+          desc: 'Cada sistema pode baixar o emulador oficial (sempre a versão mais recente) ou apontar para um executável que você já tem. Depois dá para trocar em Sistemas e emuladores.',
+        },
         ...(st.catalog || []).map((c) => ({
           type: 'button',
           leadHtml: `<span class="ico console-lead">${consoleIcon(c.id)}</span>`,
           label: c.added ? c.name : `Adicionar ${c.name}`,
-          desc: `${c.shortName} · emuladores: ${c.emulators.join(', ')}`,
-          right: c.added ? '✓ Adicionado' : 'Adicionar e baixar',
+          desc: `${c.shortName} · emuladores: ${c.emulators.join(', ')}${c.source ? ` · ${c.source}` : ''}`,
+          right: c.added ? '✓ Adicionado' : 'Adicionar',
           style: c.added ? '' : 'action',
           run: () => this.addCatalogSystem(c),
         })),
@@ -837,6 +861,18 @@ const Settings = {
           desc: 'Seleção deslizante, transições e efeitos. Desligado, tudo muda na hora — mais leve em PCs modestos.',
           get: () => a.motion !== false,
           set: (v) => (a.motion = v),
+          after: apply,
+        },
+        {
+          type: 'select',
+          label: 'Menu do topo',
+          desc: 'Ícones (como no PS5, com L2/R2 nas pontas) ou os nomes Jogos, Biblioteca, Coleções e Troféus.',
+          options: [
+            { v: 'icons', l: 'Ícones' },
+            { v: 'labels', l: 'Nomes' },
+          ],
+          get: () => (a.topNav === 'labels' ? 'labels' : 'icons'),
+          set: (v) => (a.topNav = v),
           after: apply,
         },
         { type: 'section', label: 'Imagens' },

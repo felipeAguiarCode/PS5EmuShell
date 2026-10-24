@@ -130,7 +130,7 @@ const Home = {
     this.filter = id;
     $$('#chips .chip').forEach((c) => c.classList.toggle('active', c.dataset.filter === id));
     Nav.memory.chips = $('#chips .chip.active');
-    // Recria os tiles: o selo de sistema só aparece no filtro "Todos".
+    // Recria os tiles da nova lista.
     for (const el of this.tiles.values()) el.remove();
     this.tiles.clear();
     this.buildList();
@@ -189,30 +189,33 @@ const Home = {
     return el;
   },
 
+  // A plataforma aparece na caixinha ao lado do nome (como no PS5), não sobre a capa.
   tileInner(g, sys) {
-    const badge = this.filter === 'all' && sys ? `<span class="badge">${esc(sys.shortName)}</span>` : '';
-    return `${imgTag(g.cover, g.title)}<div class="ph"><span class="sys">${esc(sys ? sys.shortName : '')}</span>${esc(g.title)}</div>${badge}`;
+    return `${imgTag(g.cover, g.title)}<div class="ph"><span class="sys">${esc(sys ? sys.shortName : '')}</span>${esc(g.title)}</div>`;
   },
 
+  // Layout no padrão do PS5: tiles alinhados pelo topo, o selecionado bem maior com anel branco
+  // e, logo abaixo dos tiles seguintes, a caixinha da plataforma + o nome do jogo.
   layout(instant) {
-    const T = (this.tileSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tile')) || 124);
-    const GAP = 18;
+    const T = (this.tileSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--tile')) || 116);
+    const GAP = 12;
     const stride = T + GAP;
     const focused = Nav.current === this.row;
-    const s = focused ? 1.42 : 1.16;
+    const s = focused ? 1.6 : 1.3;
     const big = T * s;
     const item = this.current();
 
-    // Rótulo com o nome do jogo ao lado do tile em foco.
-    let labelW = 0;
-    if (focused && item) {
-      const sys = item.kind === 'game' ? App.system(item.game.system) : null;
-      $('.rl-title', this.label).textContent = item.kind === 'game' ? item.game.title : 'Biblioteca de jogos';
-      $('.rl-sub', this.label).textContent = item.kind === 'game' ? (sys ? sys.name : '') : `${App.games.length} jogos`;
-      labelW = Math.min(this.label.offsetWidth, 420) + 40;
-      this.label.style.transform = `translate(${big + 26}px, ${big / 2 - this.label.offsetHeight / 2}px)`;
+    // O nome fica sempre visível (é o único lugar da tela que mostra o jogo selecionado).
+    if (item) {
+      const g = item.kind === 'game' ? item.game : null;
+      const sys = g ? App.system(g.system) : null;
+      $('.rl-badge', this.label).textContent = sys ? sys.shortName : '';
+      $('.rl-title', this.label).textContent = g ? g.title : 'Biblioteca de jogos';
+      $('.rl-extra', this.label).innerHTML = g ? (App.gs(g.id).favorite ? `<span class="rl-fav">${Icons.starFill}</span>` : '') : `<span class="rl-count">${App.games.length} jogos</span>`;
+      this.label.style.maxWidth = `${Math.max(240, (this.row.clientWidth || innerWidth) - big - 40)}px`;
+      this.label.style.transform = `translate(${big + 22}px, ${T + 18}px)`;
     }
-    this.label.classList.toggle('show', focused && !!item);
+    this.label.classList.toggle('show', !!item);
 
     const width = this.row.clientWidth || innerWidth;
     const from = Math.max(0, this.sel - 2);
@@ -235,9 +238,10 @@ const Home = {
         fresh.push(el);
       }
       el.dataset.idx = i;
-      const x = (i - this.sel) * stride + (i > this.sel ? big - T + labelW : 0);
+      const x = (i - this.sel) * stride + (i > this.sel ? big - T + 4 : 0);
       el.style.transform = `translate3d(${x}px,0,0) scale(${i === this.sel ? s : 1})`;
-      el.style.opacity = i < this.sel ? 0.25 : 1;
+      el.style.opacity = i < this.sel ? 0.55 : 1;
+      el.style.setProperty('--s', i === this.sel ? s : 1);
       el.classList.toggle('sel', i === this.sel);
       if (instant) el.classList.add('no-anim');
     }
@@ -265,8 +269,6 @@ const Home = {
       }
       if (item.kind === 'library') {
         hero.style.setProperty('--sys', '#555');
-        $('.hero-badge', hero).textContent = 'BIBLIOTECA';
-        $('.hero-title', hero).textContent = 'Biblioteca de jogos';
         $('.hero-meta', hero).innerHTML = `<span>${App.games.length} jogos instalados</span>`;
         play.textContent = 'Abrir';
         fav.classList.add('hidden');
@@ -279,8 +281,6 @@ const Home = {
       const st = App.gs(g.id);
       const sys = App.system(g.system);
       hero.style.setProperty('--sys', sys ? sys.color : '#555');
-      $('.hero-badge', hero).textContent = sys ? sys.name.toUpperCase() : g.system;
-      $('.hero-title', hero).textContent = g.title;
       $('.hero-meta', hero).innerHTML = [
         st.favorite ? `<span class="star">★ Favorito</span>` : '',
         g.region ? `<span>${esc(g.region)}</span>` : '',

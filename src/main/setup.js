@@ -1,4 +1,5 @@
 // Estrutura de pastas (bios/cores/roms/saves/screenshots) e download/instalação dos emuladores.
+// Sempre baixa a última versão publicada na fonte oficial de cada emulador.
 const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
@@ -25,6 +26,27 @@ const SOURCES = {
   mesen: { github: 'SourMesen/Mesen2', asset: /_Windows\.zip$/i, exe: /^Mesen\.exe$/i, portable: [] },
   fceux: { github: 'TASEmulators/fceux', asset: /win64\.zip$/i, exe: /^fceux(64)?\.exe$/i, portable: [] },
   snes9x: { github: 'snes9xgit/snes9x', asset: /win32-x64\.zip$/i, exe: /^snes9x-x64\.exe$/i, portable: [] },
+  // Sistemas extras do catálogo (Configurações › Instalação).
+  flycast: { github: 'flyinghead/flycast', asset: /^flycast-win64.*\.zip$/i, exe: /^flycast\.exe$/i, portable: [] },
+  rmg: { github: 'Rosalie241/RMG', asset: /^RMG-Portable-Windows64.*\.zip$/i, exe: /^RMG\.exe$/i, portable: [] },
+  // Project64 não publica no GitHub: a build mais nova é a primeira da lista de builds do site oficial.
+  project64: {
+    page: 'https://www.pj64-emu.com/nightly-builds',
+    link: /href="(\/file\/project64-win32-dev-[^"]+)"/i,
+    version: /dev-(\d+)-(\d+)-(\d+)-(\d+)/i,
+    versionFormat: (m) => `${m[1]}.${m[2]}.${m[3]}-${m[4]}`,
+    fileName: (url) => url.replace(/\/+$/, '').split('/').pop() + '.zip',
+    exe: /^Project64\.exe$/i,
+    portable: [],
+  },
+  // As tags do RPCS3 são o hash do build: a versão legível vem do nome do arquivo.
+  rpcs3: { github: 'RPCS3/rpcs3-binaries-win', asset: /_win64.*\.7z$/i, version: /rpcs3-v([\d.]+-\d+)/i, exe: /^rpcs3\.exe$/i, portable: [] },
+  shadps4: { github: 'shadps4-emu/shadPS4', asset: /^shadps4-win64.*\.zip$/i, exe: /^shadps4\.exe$/i, portable: [] },
+  azahar: { github: 'azahar-emu/azahar', asset: /^azahar-windows-msvc-[\d.]+\.zip$/i, exe: /^azahar(-qt)?\.exe$/i, portable: ['user/'] },
+  cemu: { github: 'cemu-project/Cemu', asset: /windows-x64\.zip$/i, exe: /^Cemu\.exe$/i, portable: ['portable/'] },
+  xemu: { github: 'xemu-project/xemu', asset: /^xemu-win-x86_64-release\.zip$/i, exe: /^xemu\.exe$/i, portable: [] },
+  xenia: { github: 'xenia-canary/xenia-canary-releases', asset: /^xenia_canary_windows.*\.zip$/i, exe: /^xenia_canary\.exe$/i, portable: ['portable.txt'] },
+  ares: { github: 'ares-emulator/ares', asset: /^ares-windows-x64\.zip$/i, exe: /^ares\.exe$/i, portable: [] },
   // Emuladores oficiais do RetroAchievements (ID do cliente no dorequest latestclient) + DLL RAIntegration.
   ranes: { ra: 5, exe: /^RANes\.exe$/i, portable: [], raIntegration: true },
   rasnes9x: { ra: 2, exe: /^RASnes9x\.exe$/i, portable: [], raIntegration: true },
@@ -48,7 +70,14 @@ function catalogStatus() {
   const have = new Set(config.get().systems.map((s) => s.id));
   return require('./defaults')
     .catalog()
-    .map((s) => ({ id: s.id, name: s.name, shortName: s.shortName, emulators: s.emulators.map((e) => e.name), added: have.has(s.id) }));
+    .map((s) => ({
+      id: s.id,
+      name: s.name,
+      shortName: s.shortName,
+      emulators: s.emulators.map((e) => e.name),
+      source: sourceLabel(SOURCES[s.defaultEmulator]),
+      added: have.has(s.id),
+    }));
 }
 
 function isRelative(p) {
@@ -116,18 +145,24 @@ async function resolveDownload(src) {
     const asset = (rel.assets || []).find((a) => src.asset.test(a.name));
     if (!asset) throw new Error('Pacote para Windows não encontrado na última versão.');
     // Alguns projetos usam tags "contínuas" (ex.: "latest", "release"): a data identifica o build.
-    return { url: asset.browser_download_url, name: asset.name, version: rel.tag_name, published: (asset.updated_at || rel.published_at || '').slice(0, 10) };
+    const fromName = src.version && (asset.name.match(src.version) || [])[1];
+    return { url: asset.browser_download_url, name: asset.name, version: fromName || rel.tag_name, published: (asset.updated_at || rel.published_at || '').slice(0, 10) };
   }
   const r = await fetch(src.page, { headers: HEADERS });
   if (!r.ok) throw new Error(`Site respondeu ${r.status}`);
   const m = (await r.text()).match(src.link);
   if (!m) throw new Error('Link de download não encontrado no site oficial.');
   const url = new URL(m[1], src.page).href;
+  const name = src.fileName ? src.fileName(url) : decodeURIComponent(url.split('/').pop());
+  if (src.version) {
+    const vm = url.match(src.version);
+    return { url, name, version: vm ? (src.versionFormat ? src.versionFormat(vm) : vm[1]) : '', published: '' };
+  }
   const version = (url.match(/(\d[\w.-]*?)-x64/) || [])[1] || '';
   // Versões do Dolphin são AAMM (ex.: 2609a = set/2026): vira a data aproximada do lançamento.
   const ym = version.match(/^(\d{2})(\d{2})/);
   const published = ym && +ym[2] >= 1 && +ym[2] <= 12 ? `20${ym[1]}-${ym[2]}-01` : '';
-  return { url, name: decodeURIComponent(url.split('/').pop()), version, published };
+  return { url, name, version, published };
 }
 
 async function download(url, dest, onProgress) {
@@ -196,7 +231,9 @@ async function latestVersions(force) {
   const file = paths.file('cache', 'latest-versions.json');
   if (!latestCache.at) Object.assign(latestCache, config.readJson(file, { at: 0, items: {} }));
   const stale = force || Date.now() - latestCache.at > LATEST_TTL;
-  const ids = Object.keys(SOURCES).filter((id) => stale || !latestCache.items[id]);
+  // Só os emuladores configurados: o GitHub limita as consultas sem login (60 por hora).
+  const used = new Set(emulatorStatus().map((e) => e.id));
+  const ids = Object.keys(SOURCES).filter((id) => used.has(id) && (stale || !latestCache.items[id] || latestCache.items[id].error));
   let i = 0;
   const worker = async () => {
     while (i < ids.length) {
@@ -374,9 +411,12 @@ async function installEmulator(systemId, emulatorId, onProgress) {
     fs.mkdirSync(target, { recursive: true });
     // Sobrescreve os arquivos do emulador; configurações, saves e BIOS que não vêm no pacote ficam intactos.
     fs.cpSync(path.dirname(found), target, { recursive: true, force: true });
+    // Marcas de modo portable: arquivo vazio, ou pasta quando o nome termina em "/".
     for (const marker of src.portable) {
       const f = path.join(target, marker);
-      if (!fs.existsSync(f)) fs.writeFileSync(f, '');
+      if (fs.existsSync(f)) continue;
+      if (marker.endsWith('/')) fs.mkdirSync(f, { recursive: true });
+      else fs.writeFileSync(f, '');
     }
     if (src.raIntegration) {
       // Deixa a DLL do RAIntegration pronta (os emuladores RA a baixariam sozinhos na 1ª execução).
