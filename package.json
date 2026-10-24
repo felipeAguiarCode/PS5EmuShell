@@ -1,6 +1,6 @@
 {
-  "name": "playdeck",
-  "productName": "PlayDeck",
+  "name": "ps5-emu-shell",
+  "productName": "PS5 Emu Shell",
   "version": "0.9.2",
   "description": "Launcher de emuladores estilo PS5, controlado por controle (Xbox/XInput, DualShock 4 e DualSense)",
   "main": "src/main/main.js",
@@ -11,8 +11,9 @@
     "build": "electron-builder --win dir"
   },
   "build": {
-    "appId": "local.playdeck.launcher",
-    "productName": "PlayDeck",
+    "appId": "local.ps5emushell.launcher",
+    "productName": "PS5 Emu Shell",
+    "executableName": "PS5EmuShell",
     "directories": {
       "output": "app"
     },

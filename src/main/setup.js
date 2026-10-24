@@ -7,7 +7,7 @@ const { execFile } = require('child_process');
 const config = require('./config');
 const paths = require('./paths');
 
-const HEADERS = { 'User-Agent': 'PlayDeck-Launcher' };
+const HEADERS = { 'User-Agent': 'PS5EmuShell-Launcher' };
 // Sistemas que precisam de pasta de BIOS (os demais podem ativar com "bios": true no config.json).
 const BIOS_SYSTEMS = ['psx', 'ps2', 'nds'];
 
@@ -178,7 +178,9 @@ async function findFile(dir, re) {
 
 // ---- versões: fonte, última disponível, instalada; sincronização de instalações manuais ----
 
-const VERSION_FILE = 'playdeck-version.json';
+const VERSION_FILE = 'ps5emushell-version.json';
+// Nome usado antes da troca de nome do launcher: instalações antigas continuam sendo reconhecidas.
+const LEGACY_VERSION_FILE = 'playdeck-version.json';
 const LATEST_TTL = 60 * 60 * 1000;
 const latestCache = { at: 0, items: {} };
 
@@ -237,17 +239,18 @@ function exeVersions(files) {
   });
 }
 
-// Versão instalada: o registro do PlayDeck vale só se o .exe não foi trocado depois (instalação manual).
+// Versão instalada: o registro do PS5 Emu Shell vale só se o .exe não foi trocado depois (instalação manual).
 async function installedVersions() {
   const items = emulatorStatus().filter((e) => e.installed);
   const result = {};
   const needExe = [];
   for (const e of items) {
     const exe = config.resolve(e.exe);
-    const rec = config.readJson(path.join(path.dirname(exe), VERSION_FILE), null);
+    const dir = path.dirname(exe);
+    const rec = config.readJson(path.join(dir, VERSION_FILE), null) || config.readJson(path.join(dir, LEGACY_VERSION_FILE), null);
     const mtime = fs.statSync(exe).mtimeMs;
     if (rec && rec.exe && rec.exe.toLowerCase() === path.basename(exe).toLowerCase() && mtime <= rec.installedAt + 120000) {
-      result[e.system + '/' + e.id] = { version: rec.version, published: rec.published, by: 'playdeck' };
+      result[e.system + '/' + e.id] = { version: rec.version, published: rec.published, by: 'shell' };
     } else {
       needExe.push({ key: e.system + '/' + e.id, exe, mtime });
     }
@@ -265,7 +268,7 @@ const nums = (s) => (String(s || '').match(/\d+/g) || []).map(Number);
 // 'ok' (atualizado), 'old' (há versão nova) ou 'unknown' (não dá para comparar).
 function compare(inst, latest) {
   if (!inst || !latest || !latest.version) return 'unknown';
-  if (inst.by === 'playdeck') {
+  if (inst.by === 'shell') {
     if (inst.version !== latest.version) return 'old';
     return !latest.published || !inst.published || inst.published >= latest.published ? 'ok' : 'old';
   }
@@ -395,6 +398,7 @@ async function installEmulator(systemId, emulatorId, onProgress) {
       path.join(target, VERSION_FILE),
       JSON.stringify({ version: info.version, published: info.published || '', source: sourceLabel(src), exe: path.basename(found), installedAt: Date.now() }, null, 2)
     );
+    fs.rmSync(path.join(target, LEGACY_VERSION_FILE), { force: true });
     delete latestCache.items[emulatorId];
     onProgress({ phase: 'done', version: info.version });
     return { ok: true, version: info.version, exe: exeRel };

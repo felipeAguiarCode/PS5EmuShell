@@ -768,7 +768,7 @@ const Settings = {
           style: 'action',
           icon: Icons.refresh,
           label: 'Sincronizar pastas dos emuladores',
-          desc: 'Baixou ou atualizou um emulador por fora? Extraia na pasta dele em cores\\… e sincronize: o PlayDeck acha o executável e lê a versão.',
+          desc: 'Baixou ou atualizou um emulador por fora? Extraia na pasta dele em cores\\… e sincronize: o PS5 Emu Shell acha o executável e lê a versão.',
           run: () => this.syncFolders(),
         },
         ...st.emulators.map((e) => {
@@ -931,7 +931,7 @@ const Settings = {
           icon: Icons.refresh,
           label: 'Restaurar lista padrão',
           run: async () => {
-            if (!(await Modal.confirm('Restaurar lista?', 'A lista de programas volta ao padrão do PlayDeck.', { ok: 'Restaurar' }))) return;
+            if (!(await Modal.confirm('Restaurar lista?', 'A lista de programas volta ao padrão do PS5 Emu Shell.', { ok: 'Restaurar' }))) return;
             o.killList = clone(App.defaultOptimize.killList);
             this.changed();
           },
@@ -946,7 +946,7 @@ const Settings = {
         ? `<div class="ra-head"><div class="ra-avatar">${this.raAvatar ? `<img src="${esc(this.raAvatar)}" alt="">` : Icons.user}</div>` +
           `<div><div class="ra-k">Conectado</div><div class="ra-user">${esc(st.username)}</div><div class="ra-pts">${st.points} pontos${st.hardcore ? ' · hardcore' : ''}${st.hasApiKey ? '' : ' · sem chave da Web API (aba Troféus desativada)'}</div></div></div>`
         : `<div class="ra-head off"><div class="ra-avatar">${Icons.trophy}</div><div><div class="ra-k">Não conectado</div>` +
-          `<div class="ra-pts">Entre com sua conta do retroachievements.org: o PlayDeck configura e loga a conta em todos os emuladores compatíveis.</div></div></div>`;
+          `<div class="ra-pts">Entre com sua conta do retroachievements.org: o PS5 Emu Shell configura e loga a conta em todos os emuladores compatíveis.</div></div></div>`;
       const rows = [
         { type: 'title', label: 'RetroAchievements' },
         { type: 'panel', html: head },
@@ -1287,7 +1287,7 @@ const Settings = {
     about() {
       return [
         { type: 'title', label: 'Sobre' },
-        { type: 'info', label: 'PlayDeck', right: `Versão ${App.version}` },
+        { type: 'info', label: 'PS5 Emu Shell', right: `Versão ${App.version}` },
         { type: 'info', label: 'Pasta do launcher', desc: App.paths.root },
         { type: 'info', label: 'Pasta de dados', desc: App.paths.data },
         { type: 'info', label: 'Pasta base dos emuladores', desc: App.paths.base },

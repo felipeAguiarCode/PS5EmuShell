@@ -3,9 +3,9 @@
 // Tipos de notificação no padrão do PS5: ícone branco (ou capa do jogo), categoria acima do título.
 // error = detalhe vermelho no ícone; busy = ação em andamento (barra fina indeterminada).
 const TOAST_KINDS = {
-  info: { icon: () => Icons.info, cat: 'PlayDeck' },
-  success: { icon: () => Icons.checkCircle, cat: 'PlayDeck' },
-  error: { icon: () => Icons.xCircle, cat: 'PlayDeck', error: true },
+  info: { icon: () => Icons.info, cat: 'PS5 Emu Shell' },
+  success: { icon: () => Icons.checkCircle, cat: 'PS5 Emu Shell' },
+  error: { icon: () => Icons.xCircle, cat: 'PS5 Emu Shell', error: true },
   scan: { icon: () => Icons.refresh, cat: 'Biblioteca', busy: true },
   library: { icon: () => Icons.library, cat: 'Biblioteca' },
   launchError: { icon: () => Icons.xCircle, cat: 'Jogo', error: true },

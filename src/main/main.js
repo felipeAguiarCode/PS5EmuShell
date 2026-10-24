@@ -63,7 +63,7 @@ function createWindow() {
     frame: false,
     show: false,
     backgroundColor: '#04060c',
-    title: 'PlayDeck',
+    title: 'PS5 Emu Shell',
     icon: path.join(__dirname, '..', 'icon.ico'),
     autoHideMenuBar: true,
     webPreferences: {
@@ -435,6 +435,14 @@ function setupIpc() {
     return true;
   });
   ipcMain.handle('pcgames:list', () => pcgames.list());
+  // Imagem de fundo escolhida para um jogo (null remove).
+  ipcMain.handle('games:setBackground', (_e, id, file) => {
+    const g = library.find((x) => x.id === id);
+    if (!g) return null;
+    const art = covers.setBackground(g, file ? config.resolve(file) : null);
+    send('cover', { id, ...art });
+    return art;
+  });
 
   // ---- pastas de ROMs: qual sistema combina com os arquivos da pasta ----
   ipcMain.handle('roms:detect', (_e, dir) => browse.detectSystems(dir, config.get().systems));

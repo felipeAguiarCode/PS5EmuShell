@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Platina minimalista (desenho próprio do PlayDeck): esfera lisa sobre pedestal. -->
+  <!-- Platina minimalista (desenho próprio do PS5 Emu Shell): esfera lisa sobre pedestal. -->
   <circle cx="32" cy="21" r="15" fill="#7fb6ec"/>
   <path d="M24.5 13.5a10.5 10.5 0 0 1 9-4" fill="none" stroke="#d6eafc" stroke-width="3.2" stroke-linecap="round"/>
   <path d="M25 36h14l-2.5 9h-9z" fill="#b9c2ce"/>

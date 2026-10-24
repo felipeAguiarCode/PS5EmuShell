@@ -6,7 +6,7 @@ const paths = require('../paths');
 
 const HOST = 'https://retroachievements.org';
 const MEDIA = 'https://media.retroachievements.org';
-const HEADERS = { 'User-Agent': 'PlayDeck-Launcher' };
+const HEADERS = { 'User-Agent': 'PS5EmuShell-Launcher' };
 
 async function json(res) {
   const text = await res.text();

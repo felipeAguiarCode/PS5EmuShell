@@ -92,7 +92,7 @@ const AddGames = {
         { label: 'Adicionar à coleção…', icon: Icons.library, right: inCount ? `em ${inCount}` : null, value: 'collection' },
         { label: 'Renomear', icon: Icons.edit || Icons.gear, value: 'rename' },
         { label: 'Trocar executável', icon: Icons.folder, value: 'exe' },
-        { label: 'Recriar imagem do ícone', icon: Icons.image, value: 'icon' },
+        { label: 'Thumbnails', icon: Icons.image, right: '›', value: 'thumbs' },
         { label: 'Mostrar arquivo no Explorer', icon: Icons.folder, value: 'folder' },
         { label: 'Informações', icon: Icons.info, value: 'info' },
         { label: 'Remover do launcher', icon: Icons.trash, value: 'remove' },
@@ -118,10 +118,8 @@ const AddGames = {
       await api.invoke('pcgames:update', game.id, { exe });
       await this.makeCover(game.id);
       Toast.show('Executável trocado', game.title, { kind: 'pcAdd', image: game.cover });
-    } else if (v === 'icon') {
-      await api.invoke('pcgames:refreshIcon', game.id);
-      await this.makeCover(game.id);
-      Toast.show('Imagem recriada', game.title, { kind: 'cover', ms: 2200, image: (App.byId.get(game.id) || game).cover });
+    } else if (v === 'thumbs') {
+      return this.thumbnails(game);
     } else if (v === 'remove') {
       const ok = await Modal.confirm(`Remover “${game.title}”?`, 'O jogo sai do launcher. Nenhum arquivo do jogo é apagado.', { ok: 'Remover' });
       if (!ok) return;
@@ -129,6 +127,34 @@ const AddGames = {
       Toast.show('Jogo removido do launcher', game.title, { kind: 'collectionRemove' });
     }
     if (App.view === 'settings') Settings.render();
+  },
+
+  // Thumbnails: imagem da capa (feita do ícone do .exe) e imagem de fundo da tela inicial.
+  async thumbnails(game) {
+    const g = App.byId.get(game.id) || game;
+    const v = await Modal.menu({
+      title: 'Thumbnails',
+      sub: g.title,
+      items: [
+        { label: 'Recriar imagem do ícone', icon: Icons.refresh, value: 'icon' },
+        { label: 'Selecionar imagem de background', icon: Icons.image, right: g.snap ? 'definida' : null, value: 'bg' },
+        ...(g.snap ? [{ label: 'Remover imagem de background', icon: Icons.trash, value: 'bgclear' }] : []),
+      ],
+    });
+    if (v === 'icon') {
+      await api.invoke('pcgames:refreshIcon', g.id);
+      await this.makeCover(g.id);
+      Toast.show('Imagem recriada', g.title, { kind: 'cover', ms: 2200, image: (App.byId.get(g.id) || g).cover });
+    } else if (v === 'bg') {
+      const file = await FileBrowser.open({ mode: 'image', title: `Imagem de background de “${g.title}”` });
+      if (!file) return;
+      await api.invoke('games:setBackground', g.id, file);
+      Toast.show('Background definido', g.title, { kind: 'cover', ms: 2400, image: g.cover });
+    } else if (v === 'bgclear') {
+      await api.invoke('games:setBackground', g.id, null);
+      Toast.show('Background removido', g.title, { kind: 'coverClear', ms: 2200, image: g.cover });
+    }
+    if (v && App.view === 'settings') Settings.render();
   },
 
   // Configurações › Sistemas › PC (Windows): os jogos cadastrados e o botão de adicionar.
@@ -153,7 +179,7 @@ const AddGames = {
             items: [
               { label: 'Renomear', icon: Icons.gear, value: 'rename' },
               { label: 'Trocar executável', icon: Icons.folder, value: 'exe' },
-              { label: 'Recriar imagem do ícone', icon: Icons.image, value: 'icon' },
+              { label: 'Thumbnails', icon: Icons.image, right: '›', value: 'thumbs' },
               { label: 'Remover do launcher', icon: Icons.trash, value: 'remove' },
             ],
           });

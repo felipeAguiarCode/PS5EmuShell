@@ -419,9 +419,30 @@ const App = {
       html:
         `<h3>${esc(game.title)}</h3>` +
         rows.map(([k, v]) => `<div class="menu-item" style="height:auto;padding:10px 18px"><span style="color:var(--fg-faint);width:130px;flex:none">${esc(k)}</span><span style="word-break:break-all">${esc(v)}</span></div>`).join('') +
-        `<div class="modal-buttons"><button class="btn-pill focusable" data-group="mb">OK</button></div>`,
-      onMount: (box) => box.addEventListener('click', (e) => e.target.closest('.btn-pill') && Modal.close()),
+        `<div class="modal-buttons"><button class="btn-pill focusable danger" data-group="mb" data-act="reset">${Icons.refresh} Resetar estatísticas</button>` +
+        `<button class="btn-pill focusable" data-group="mb" data-act="ok">OK</button></div>`,
+      initial: '[data-act="ok"]',
+      onMount: (box) =>
+        box.addEventListener('click', (e) => {
+          const b = e.target.closest('.btn-pill');
+          if (!b) return;
+          if (b.dataset.act === 'reset') this.resetStats(game);
+          else Modal.close();
+        }),
     });
+  },
+
+  // Zera tempo de jogo, sessões e "última vez" do jogo (favorito e emulador escolhido continuam).
+  async resetStats(game) {
+    if (this.running && this.runningId === game.id) return Toast.show('Jogo em execução', 'Feche o jogo antes de resetar as estatísticas.', { kind: 'error' });
+    const ok = await Modal.confirm('Resetar estatísticas?', `Tempo de jogo, sessões e a data da última vez de “${game.title}” voltam a zero. Isso não pode ser desfeito.`, { ok: 'Resetar' });
+    if (!ok) return;
+    await this.updateStats(game.id, { playTime: null, lastSessionMs: null, playCount: null, lastPlayed: null, session: null });
+    Modal.close(); // fecha as informações antigas
+    Home.refresh();
+    Library.refresh();
+    Toast.show('Estatísticas resetadas', game.title, { kind: 'success', image: game.cover });
+    this.gameInfo(game);
   },
 
   async powerMenu() {
@@ -708,8 +729,8 @@ const App = {
       { label: 'Não perguntar novamente', icon: Icons.exit, value: 'never' }
     );
     const v = await Modal.menu({
-      title: 'Preparar o PlayDeck',
-      sub: `Faltam ${parts.join(' e ')} em ${st.base}. O PlayDeck pode criar a mesma estrutura de bios, cores, roms, saves e screenshots.`,
+      title: 'Preparar o PS5 Emu Shell',
+      sub: `Faltam ${parts.join(' e ')} em ${st.base}. O PS5 Emu Shell pode criar a mesma estrutura de bios, cores, roms, saves e screenshots.`,
       items,
     });
     if (v === 'dirs') {

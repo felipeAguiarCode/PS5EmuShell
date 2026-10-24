@@ -29,7 +29,7 @@ function places() {
   const add = (kind, label, p) => {
     if (p && exists(p) && !out.some((x) => x.path.toLowerCase() === p.toLowerCase())) out.push({ kind, label, path: p });
   };
-  for (const [label, key] of [['Área de trabalho', 'desktop'], ['Downloads', 'downloads'], ['Documentos', 'documents']]) {
+  for (const [label, key] of [['Área de trabalho', 'desktop'], ['Downloads', 'downloads'], ['Imagens', 'pictures'], ['Documentos', 'documents']]) {
     try {
       add('user', label, app.getPath(key));
     } catch {}
@@ -87,12 +87,12 @@ async function list(dir, mode = 'exe') {
     // Atalhos de pasta (junctions) aparecem como links simbólicos.
     if (!isDir && e.isSymbolicLink()) isDir = exists(path.join(full, e.name));
     if (isDir) entries.push({ name: e.name, type: 'dir' });
-    else if (mode === 'exe' && /\.exe$/i.test(e.name)) {
+    else if ((mode === 'exe' && /\.exe$/i.test(e.name)) || (mode === 'image' && /\.(png|jpe?g|webp)$/i.test(e.name))) {
       let size = 0;
       try {
         size = fs.statSync(path.join(full, e.name)).size;
       } catch {}
-      entries.push({ name: e.name, type: 'exe', size });
+      entries.push({ name: e.name, type: mode === 'image' ? 'img' : 'exe', size });
     }
   }
   entries.sort((a, b) => (a.type === b.type ? collator.compare(a.name, b.name) : a.type === 'dir' ? -1 : 1));

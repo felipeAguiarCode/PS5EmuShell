@@ -1,6 +1,6 @@
 // Resolve a pasta raiz do launcher de forma portable.
 // Em dev: a pasta launcher/. Empacotado: sobe a partir do exe até achar o marcador
-// launcher.portable (assim app/win-unpacked/PlayDeck.exe usa launcher/data).
+// launcher.portable (assim app/win-unpacked/PS5EmuShell.exe usa launcher/data).
 const { app } = require('electron');
 const path = require('path');
 const fs = require('fs');

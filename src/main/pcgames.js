@@ -95,9 +95,9 @@ function update(id, patch) {
 // Só tira do launcher: nenhum arquivo do jogo é apagado.
 function remove(id) {
   write(list().filter((g) => g.id !== id));
-  for (const f of [path.join(iconDir(), id + '.png'), path.join(iconDir(), id + '.ico'), paths.file('cache', 'covers', 'pc', id + '.png')]) {
-    fs.rmSync(f, { force: true });
-  }
+  const files = [path.join(iconDir(), id + '.png'), path.join(iconDir(), id + '.ico'), paths.file('cache', 'covers', 'pc', id + '.png')];
+  for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) files.push(paths.file('backgrounds', 'pc', id + ext));
+  for (const f of files) fs.rmSync(f, { force: true });
 }
 
 function iconFile(id) {

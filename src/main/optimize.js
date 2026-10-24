@@ -8,7 +8,7 @@ const PROTECTED = new Set([
   'dwm', 'explorer', 'fontdrvhost', 'sihost', 'ctfmon', 'audiodg', 'conhost', 'dllhost', 'runtimebroker',
   'searchhost', 'searchindexer', 'startmenuexperiencehost', 'shellexperiencehost', 'textinputhost',
   'taskhostw', 'spoolsv', 'wudfhost', 'securityhealthservice', 'msmpeng', 'nissrv', 'memcompression',
-  'secure system', 'system idle process', 'playdeck', 'electron', 'node', 'tasklist', 'taskkill', 'powershell',
+  'secure system', 'system idle process', 'ps5emushell', 'playdeck', 'electron', 'node', 'tasklist', 'taskkill', 'powershell',
 ]);
 
 function tasklist() {

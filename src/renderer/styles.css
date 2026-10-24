@@ -1418,3 +1418,9 @@ body.theme-light .pt-off { background: rgba(255, 255, 255, 0.7); }
 .pc-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .pc-thumb svg { width: 24px; height: 24px; }
 body.theme-light .fb-place.focused, body.theme-light .fb-item.focused, body.theme-light .fb-place:hover, body.theme-light .fb-item:hover { background: rgba(0, 0, 0, 0.06); }
+/* Botão de ação destrutiva nos modais (ex.: Resetar estatísticas) */
+.btn-pill.danger { display: inline-flex; align-items: center; gap: 8px; color: #ff8a8a; }
+.btn-pill.danger svg { width: 18px; height: 18px; }
+.btn-pill.danger.focused, .btn-pill.danger:hover { background: #ff5d5d; color: #fff; }
+body.theme-light .btn-pill.danger { color: #c93434; }
+body.theme-light .btn-pill.danger.focused, body.theme-light .btn-pill.danger:hover { background: #c93434; color: #fff; }

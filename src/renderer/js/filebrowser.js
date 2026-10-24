@@ -1,4 +1,4 @@
-/* Explorador de arquivos do launcher: escolhe um .exe (jogos de PC) ou uma pasta (ROMs).
+/* Explorador de arquivos do launcher: escolhe um .exe (jogos de PC), uma imagem (fundo) ou uma pasta (ROMs).
  * Controle: ✕ abre/escolhe · ○ volta uma pasta · △ usa a pasta atual (modo pasta) · □ Explorer do Windows
  * · L1/R1 alterna entre Locais e a lista. Mouse e teclado (Enter, Backspace, Esc) também funcionam. */
 const FB_PAGE = 300;
@@ -13,11 +13,17 @@ const FileBrowser = {
       .map((p, i) => `<button class="fb-place focusable" data-group="fbplaces" data-p="${i}"><span class="ico">${this.placeIcon(p.kind)}</span><span class="n">${esc(p.label)}</span></button>`)
       .join('');
     const hints = [['a', 'Abrir'], ['b', 'Voltar'], ...(mode === 'dir' ? [['y', 'Usar esta pasta']] : []), ['x', 'Explorer do Windows'], ['lb+rb', 'Locais / lista']];
-    const first = start || (places.find((p) => (mode === 'dir' ? p.kind === 'base' && /ROMs/.test(p.label) : p.kind === 'games')) || places.find((p) => p.kind === 'user') || places[0] || {}).path;
+    const startPlace = {
+      dir: (p) => p.kind === 'base' && /ROMs/.test(p.label),
+      image: (p) => p.label === 'Imagens',
+      exe: (p) => p.kind === 'games',
+    }[mode];
+    const first = start || (places.find(startPlace) || places.find((p) => p.kind === 'user') || places[0] || {}).path;
+    const defaultTitle = { dir: 'Escolha a pasta', image: 'Escolha a imagem', exe: 'Escolha o executável do jogo' }[mode];
     const result = Modal.open({
       className: 'file-browser',
       html:
-        `<div class="fb-head"><div class="fb-ico">${mode === 'dir' ? Icons.folder : Icons.gamepad}</div><div class="fb-titles"><h3>${esc(title || (mode === 'dir' ? 'Escolha a pasta' : 'Escolha o executável do jogo'))}</h3>` +
+        `<div class="fb-head"><div class="fb-ico">${{ dir: Icons.folder, image: Icons.image }[mode] || Icons.gamepad}</div><div class="fb-titles"><h3>${esc(title || defaultTitle)}</h3>` +
         `<div class="fb-path"></div></div></div>` +
         `<div class="fb-body"><div class="fb-places">${placeHtml}</div><div class="fb-list"></div></div>` +
         `<div class="fb-foot"><span class="fb-count"></span>` +
@@ -77,17 +83,18 @@ const FileBrowser = {
     const shown = data.entries.slice(0, this.st.limit);
     const item = (e, i) =>
       `<button class="fb-item focusable ${e.type}" data-group="fblist" data-i="${i}" data-name="${esc(e.name)}">` +
-      `<span class="ico">${e.type === 'dir' ? Icons.folder : Icons.play}</span><span class="n">${esc(e.name)}</span>` +
-      `<span class="m">${e.type === 'exe' ? fmtSize(e.size) : ''}</span></button>`;
+      `<span class="ico">${{ dir: Icons.folder, img: Icons.image }[e.type] || Icons.play}</span><span class="n">${esc(e.name)}</span>` +
+      `<span class="m">${e.type === 'dir' ? '' : fmtSize(e.size)}</span></button>`;
     list.innerHTML =
       (data.parent ? `<button class="fb-item focusable up" data-group="fblist" data-up="1"><span class="ico">${Icons.chevL}</span><span class="n">Voltar para ${esc(data.parent)}</span></button>` : '') +
       (data.error ? `<div class="fb-empty">${esc(data.error)}</div>` : '') +
       shown.map(item).join('') +
       (data.entries.length > shown.length ? `<button class="fb-item focusable more" data-group="fblist" data-more="1"><span class="ico">${Icons.plus}</span><span class="n">Mostrar mais ${Math.min(FB_PAGE, data.entries.length - shown.length)} (de ${data.entries.length - shown.length})</span></button>` : '') +
-      (!data.error && !data.entries.length ? `<div class="fb-empty">${mode === 'dir' ? 'Nenhuma subpasta aqui.' : 'Nenhuma pasta ou executável aqui.'}</div>` : '');
-    const exes = data.entries.filter((e) => e.type === 'exe').length;
-    const dirs = data.entries.length - exes;
-    $('.fb-count', box).textContent = `${dirs} ${dirs === 1 ? 'pasta' : 'pastas'}${mode === 'exe' ? ` · ${exes} ${exes === 1 ? 'executável' : 'executáveis'}` : ''}`;
+      (!data.error && !data.entries.length ? `<div class="fb-empty">${{ dir: 'Nenhuma subpasta aqui.', image: 'Nenhuma pasta ou imagem aqui.' }[mode] || 'Nenhuma pasta ou executável aqui.'}</div>` : '');
+    const files = data.entries.filter((e) => e.type !== 'dir').length;
+    const dirs = data.entries.length - files;
+    const fileWord = { exe: ['executável', 'executáveis'], image: ['imagem', 'imagens'] }[mode];
+    $('.fb-count', box).textContent = `${dirs} ${dirs === 1 ? 'pasta' : 'pastas'}${fileWord ? ` · ${files} ${fileWord[files === 1 ? 0 : 1]}` : ''}`;
     list.scrollTop = 0;
     const target = (focusName && [...$$('.fb-item', list)].find((b) => b.dataset.name === focusName)) || $('.fb-item:not(.up)', list) || $('.fb-item', list) || $('.fb-place', box);
     if (target) Nav.focus(target, { silent: true });
@@ -133,9 +140,9 @@ const FileBrowser = {
     if (act === 'native') {
       const p = await api.invoke('dialog:pick', {
         kind: st.mode === 'dir' ? 'folder' : 'file',
-        title: st.mode === 'dir' ? 'Pasta de ROMs' : 'Executável do jogo',
+        title: { dir: 'Pasta de ROMs', image: 'Imagem' }[st.mode] || 'Executável do jogo',
         defaultPath: st.dir,
-        filters: [{ name: 'Executáveis', extensions: ['exe'] }],
+        filters: st.mode === 'image' ? [{ name: 'Imagens', extensions: ['png', 'jpg', 'jpeg', 'webp'] }] : [{ name: 'Executáveis', extensions: ['exe'] }],
       });
       if (p) Modal.close(p);
     }

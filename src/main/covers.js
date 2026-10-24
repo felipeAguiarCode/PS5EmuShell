@@ -13,7 +13,7 @@ const IMG_EXT = ['.png', '.jpg', '.jpeg', '.webp'];
 const INDEX_TTL = 14 * 864e5;
 const MISS_TTL = 7 * 864e5;
 const CONCURRENCY = 4;
-const HEADERS = { 'User-Agent': 'PlayDeck-Launcher' };
+const HEADERS = { 'User-Agent': 'PS5EmuShell-Launcher' };
 
 // Aceita tanto "Sony - PlayStation 2" quanto o nome do repositório GitHub "Sony_-_PlayStation_2".
 const folderName = (repo) => (repo.includes('_-_') ? repo.replace(/_/g, ' ') : repo).trim();
@@ -29,11 +29,25 @@ function cacheFile(kind, game) {
 
 function manualFile(kind, game) {
   const dir = paths.file(kind === 'cover' ? 'covers' : 'backgrounds', game.system);
-  for (const ext of IMG_EXT) {
-    const f = path.join(dir, game.base + ext);
-    if (fs.existsSync(f)) return f;
+  // Jogos de PC também aceitam o id (vários jogos podem ter o exe com o mesmo nome, ex.: Launcher.exe).
+  for (const name of game.native ? [game.id, game.base] : [game.base]) {
+    for (const ext of IMG_EXT) {
+      const f = path.join(dir, name + ext);
+      if (fs.existsSync(f)) return f;
+    }
   }
   return null;
+}
+
+// Imagem de fundo escolhida pelo usuário para um jogo (data/backgrounds/<sistema>/<id>.<ext>); null remove.
+function setBackground(game, file) {
+  const dir = paths.file('backgrounds', game.system);
+  for (const ext of IMG_EXT) fs.rmSync(path.join(dir, game.id + ext), { force: true });
+  if (!file) return resolveArt(game);
+  paths.ensure(dir);
+  const ext = path.extname(file).toLowerCase();
+  fs.copyFileSync(file, path.join(dir, game.id + (IMG_EXT.includes(ext) ? ext : '.png')));
+  return resolveArt(game);
 }
 
 function fileUrl(f) {
@@ -256,10 +270,23 @@ async function run(onUpdate, onProgress) {
   done = 0;
 }
 
+// Apaga só o que pode ser baixado de novo: ícones e capas dos jogos de PC (gerados do .exe)
+// e o cache do RetroAchievements ficam.
 async function clearCache() {
-  await fsp.rm(paths.file('cache'), { recursive: true, force: true });
+  const root = paths.file('cache');
+  const keep = new Set(['icons', 'ra']);
+  for (const name of await fsp.readdir(root).catch(() => [])) {
+    if (keep.has(name)) continue;
+    if (name === 'covers') {
+      for (const sys of await fsp.readdir(path.join(root, name)).catch(() => [])) {
+        if (sys !== 'pc') await fsp.rm(path.join(root, name, sys), { recursive: true, force: true });
+      }
+      continue;
+    }
+    await fsp.rm(path.join(root, name), { recursive: true, force: true });
+  }
   for (const k of Object.keys(indexes)) delete indexes[k];
   misses = {};
 }
 
-module.exports = { resolveArt, enqueue, clearCache };
+module.exports = { resolveArt, enqueue, clearCache, setBackground };

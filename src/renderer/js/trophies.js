@@ -79,7 +79,7 @@ const TR_SORTS = [
   { id: 'za', label: 'Nome (Z–A)' },
 ];
 
-// Console do RetroAchievements → id do sistema no PlayDeck (para achar a ROM na biblioteca).
+// Console do RetroAchievements → id do sistema no PS5 Emu Shell (para achar a ROM na biblioteca).
 const RA_SYSTEMS = {
   'PlayStation': 'psx', 'PlayStation 2': 'ps2', 'PlayStation Portable': 'psp', 'Nintendo DS': 'nds', 'GameCube': 'gc',
   'Game Boy Advance': 'gba', 'Game Boy Color': 'gbc', 'Game Boy': 'gbc', 'NES/Famicom': 'nes', 'SNES/Super Famicom': 'snes',
