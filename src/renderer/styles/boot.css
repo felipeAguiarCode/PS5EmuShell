@@ -1,0 +1,181 @@
+#welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 120%, #10306e 0%, #050915 60%, #02040a 100%);
+  transition: opacity 0.6s var(--ease-soft);
+}
+#welcome.out {
+  opacity: 0;
+  pointer-events: none;
+}
+.welcome-inner {
+  text-align: center;
+  animation: modalIn 0.8s var(--ease) both;
+}
+.welcome-q {
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--fg-dim);
+  margin: 0 0 46px;
+}
+.welcome-avatar {
+  width: 150px;
+  height: 150px;
+  font-size: 62px;
+  margin: 0 auto;
+  box-shadow:
+    0 0 0 4px #fff,
+    0 0 50px rgba(255, 255, 255, 0.35);
+  animation: breatheAvatar 2.6s ease-in-out infinite;
+}
+@keyframes breatheAvatar {
+  50% {
+    box-shadow:
+      0 0 0 4px #fff,
+      0 0 80px rgba(255, 255, 255, 0.55);
+  }
+}
+.welcome-name {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 26px;
+}
+.welcome-press {
+  margin-top: 60px;
+  color: var(--fg-dim);
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 30px;
+  transition: opacity 0.7s var(--ease-soft);
+}
+#boot.out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot-logo {
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  height: 70px;
+  opacity: 0;
+  animation: shapeIn 0.5s var(--ease) 0.05s forwards;
+}
+.shape {
+  width: 46px;
+  height: 46px;
+  opacity: 0.22;
+  transform: translateY(0) scale(0.86);
+  animation: shapeWave 1.2s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+.shape {
+  color: #fff;
+}
+.shape.s1 {
+  animation-delay: 0s;
+  width: 0;
+  height: 0;
+  border-left: 26px solid transparent;
+  border-right: 26px solid transparent;
+  border-bottom: 46px solid #fff;
+}
+.shape.s2 {
+  animation-delay: 0.15s;
+  border: 5px solid #fff;
+  border-radius: 50%;
+}
+.shape.s3 {
+  animation-delay: 0.3s;
+  position: relative;
+}
+.shape.s3::before,
+.shape.s3::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 6px;
+  height: 58px;
+  margin-left: -3px;
+  background: #fff;
+  border-radius: 3px;
+  transform: rotate(45deg);
+}
+.shape.s3::after {
+  transform: rotate(-45deg);
+}
+.shape.s4 {
+  animation-delay: 0.45s;
+  border: 5px solid #fff;
+  border-radius: 4px;
+}
+@keyframes shapeWave {
+  0%,
+  55%,
+  100% {
+    opacity: 0.28;
+    transform: translateY(0) scale(0.86);
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.25));
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1.08);
+    filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 26px rgba(170, 205, 255, 0.85));
+  }
+  35% {
+    opacity: 0.92;
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 7px #fff) drop-shadow(0 0 16px rgba(170, 205, 255, 0.55));
+  }
+}
+@keyframes shapeIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --pad: 44px;
+    --tile: 100px;
+  }
+  .hero-cards .card {
+    width: 200px;
+  }
+  .lib-side,
+  .set-side {
+    width: 240px;
+  }
+}
+@media (max-height: 760px) {
+  .hero-cards {
+    display: none;
+  }
+  #row-wrap {
+    height: 200px;
+  }
+}

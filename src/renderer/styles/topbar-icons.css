@@ -1,0 +1,90 @@
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.tab-ico {
+  display: none;
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+.tab-ico svg {
+  width: 100%;
+  height: 100%;
+}
+.tab-hint {
+  display: none;
+}
+body.nav-icons .tabs {
+  align-items: center;
+  gap: 22px;
+}
+body.nav-icons .tab {
+  position: relative;
+  padding: 9px 12px;
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+body.nav-icons .tab-ico {
+  display: block;
+}
+body.nav-icons .tab-lbl {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  margin-left: -10px;
+  font-size: 22px;
+  transition:
+    max-width 0.3s var(--ease),
+    opacity 0.2s,
+    margin 0.3s var(--ease);
+}
+
+body.nav-icons .tab.focused .tab-lbl,
+body.nav-icons .tab:hover .tab-lbl {
+  max-width: 220px;
+  opacity: 1;
+  margin-left: 0;
+}
+body.nav-icons .tab.active {
+  color: #fff;
+}
+body.nav-icons .tab.active::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+body.nav-icons .tab.focused,
+body.nav-icons .tab:hover {
+  color: #fff;
+  background: var(--glass);
+}
+body.nav-icons .tab-hint {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.85;
+}
+body.nav-icons .tab-hint img.glyph,
+body.nav-icons .tab-hint .glyph {
+  height: 26px;
+}
+body.theme-light.nav-icons .tab {
+  color: rgba(21, 23, 29, 0.5);
+}
+body.theme-light.nav-icons .tab.active,
+body.theme-light.nav-icons .tab.focused,
+body.theme-light.nav-icons .tab:hover {
+  color: var(--fg);
+}

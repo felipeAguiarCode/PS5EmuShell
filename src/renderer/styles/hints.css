@@ -1,0 +1,55 @@
+#hints {
+  position: fixed;
+  right: calc(var(--pad) - 18px);
+  bottom: 22px;
+  z-index: 70;
+  display: flex;
+  gap: 28px;
+  padding: 8px 18px;
+  border-radius: 22px;
+  background: rgba(8, 10, 18, 0.72);
+  backdrop-filter: blur(14px);
+  font-size: 15px;
+  color: var(--fg-dim);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.glyph {
+  height: 28px;
+  width: auto;
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+  object-fit: contain;
+}
+img.glyph + img.glyph,
+.glyph + .glyph {
+  margin-left: 4px;
+}
+span.glyph.wide {
+  display: inline-grid;
+  place-items: center;
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+.welcome-press .glyph {
+  height: 32px;
+}
+.launch-sub .glyph {
+  height: 22px;
+  margin: 0 2px;
+}
+.select-val .glyph {
+  height: 26px;
+}

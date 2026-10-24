@@ -1,0 +1,108 @@
+#row-wrap {
+  height: 226px;
+  padding-top: 14px;
+}
+.tile {
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+}
+.tile .ph {
+  font-size: 13px;
+  padding: 10px;
+}
+.tile .ph .sys {
+  top: 9px;
+  left: 10px;
+  font-size: 10px;
+}
+.tile.sel {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.tile.sel {
+  outline: calc(2px / var(--s, 1)) solid rgba(255, 255, 255, 0.55);
+  outline-offset: calc(5px / var(--s, 1));
+}
+#row.focused .tile.sel {
+  outline: calc(3px / var(--s, 1)) solid #fff;
+  outline-offset: calc(5px / var(--s, 1));
+  box-shadow:
+    0 0 calc(22px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.32),
+    0 16px 36px rgba(0, 0, 0, 0.6);
+  animation: tileRing 2.6s ease-in-out infinite;
+}
+@keyframes tileRing {
+  0%,
+  100% {
+    box-shadow:
+      0 0 calc(16px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.22),
+      0 16px 36px rgba(0, 0, 0, 0.6);
+  }
+  50% {
+    box-shadow:
+      0 0 calc(30px / var(--s, 1)) calc(8px / var(--s, 1)) rgba(255, 255, 255, 0.45),
+      0 16px 36px rgba(0, 0, 0, 0.6);
+  }
+}
+body.no-motion #row.focused .tile.sel {
+  animation: none;
+}
+
+#row-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: none;
+  white-space: nowrap;
+}
+.rl-badge {
+  flex: none;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  line-height: 1;
+  padding: 6px 10px 5px;
+  border-radius: 7px;
+  color: #0b0d12;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+.rl-badge:empty {
+  display: none;
+}
+.rl-title {
+  min-width: 0;
+  font-size: 31px;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.rl-extra {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--fg-dim);
+  font-size: 18px;
+  font-weight: 300;
+}
+.rl-fav {
+  width: 22px;
+  height: 22px;
+  color: #ffc93c;
+}
+.rl-fav svg {
+  width: 100%;
+  height: 100%;
+}
+body.theme-light .rl-badge {
+  color: #fff;
+  background: #15171d;
+  box-shadow: none;
+}
+body.theme-light .rl-title {
+  text-shadow: none;
+}
+body.theme-light #row.focused .tile.sel {
+  outline-color: #15171d;
+}

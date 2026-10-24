@@ -140,8 +140,11 @@ git clone https://github.com/felipeAguiarCode/PS5EmuShell.git launcher
 cd launcher
 npm install
 npm start          # roda a partir do código-fonte (modo desenvolvedor)
+npm run check      # ESLint + Prettier + testes (node:test)
 npm run build      # gera app\win-unpacked\PS5EmuShell.exe
 ```
+
+O código segue o guia em [`.specs/coding-style.md`](.specs/coding-style.md): paradigma funcional, ESM, nomes em inglês e sem comentários. Os textos da interface continuam em português.
 
 Clone dentro da sua pasta base (ex.: `C:\Emuladores`), porque o launcher procura `bios`, `cores` e `roms` na pasta acima dele.
 
@@ -158,9 +161,21 @@ Estrutura:
 
 | Pasta | Conteúdo |
 |---|---|
-| `src/main` | Processo principal: controles (XInput + HID), emuladores, instalação, RetroAchievements |
-| `src/main/retroachievements` | Um script por emulador para configurar o login |
-| `src/renderer` | Interface (HTML/CSS/JS sem framework) |
+| `src/main/index.js` | Entrada do processo principal: ciclo de vida, janela e ligação das camadas |
+| `src/main/constants` | Constantes globais por contexto e textos exibidos na interface |
+| `src/main/core` | Caminhos, `config.json`, `stats.json` e leitura/escrita de JSON |
+| `src/main/defaults` | Configuração padrão e catálogo de sistemas |
+| `src/main/ipc` | Canais IPC entre a interface e o processo principal, um arquivo por contexto |
+| `src/main/input` | Controles: XInput, HID (DualShock 4/DualSense), slots e combos |
+| `src/main/library` | Busca de ROMs, capas, jogos de PC, coleções, avatares e tempo de jogo |
+| `src/main/emulators` | Fontes de download, instalação, versões, sincronização e execução dos jogos |
+| `src/main/system` | Bateria, processos, monitor de desempenho e otimização |
+| `src/main/files` | Explorador de arquivos e detecção do sistema de uma pasta |
+| `src/main/window` | Janela principal, overlay do jogo e atalhos de teclado |
+| `src/main/retroachievements` | `api/` (web API e caches), `formats/` (INI e token do DuckStation) e `emulators/` (um script por emulador) |
+| `src/renderer/scripts` | Interface em módulos ES: `core` (estado, comandos, API), `ui`, `navigation`, `input` e `views/` por tela |
+| `src/renderer/styles` | CSS dividido por tela, na ordem da cascata |
+| `test` | Testes com `node:test` das funções puras do main e da interface |
 | `assets/avatars` | Avatares do perfil |
 
 Ícones de botões: [Kenney Input Prompts](https://kenney.nl/assets/input-prompts) (CC0). Fonte: Source Sans 3 (SIL OFL).

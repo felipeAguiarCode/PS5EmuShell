@@ -1,0 +1,81 @@
+#launch-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+#launch-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-soft) 0.35s;
+}
+#launch-layer.go::before {
+  opacity: 1;
+}
+#launch-layer.back::before {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0.7s;
+}
+.launch-art {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 22px;
+  background-size: cover;
+  background-position: center top;
+  transform-origin: 0 0;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.6s var(--ease),
+    opacity 0.4s var(--ease-soft) 0.45s,
+    border-radius 0.6s var(--ease);
+  z-index: 1;
+}
+#launch-layer.go .launch-art {
+  opacity: 0;
+}
+.launch-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14vh;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.4s 0.55s;
+  z-index: 2;
+}
+#launch-layer.go .launch-info {
+  opacity: 1;
+}
+#launch-layer.back .launch-info {
+  opacity: 0;
+  transition-delay: 0s;
+}
+.launch-title {
+  font-size: 34px;
+  font-weight: 600;
+  margin-top: 22px;
+}
+.launch-sub {
+  font-size: 16px;
+  color: var(--fg-dim);
+  margin-top: 8px;
+}
+.spinner {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #fff;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

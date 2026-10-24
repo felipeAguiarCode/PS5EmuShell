@@ -1,0 +1,256 @@
+body {
+  letter-spacing: 0.1px;
+}
+
+.tab {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.tab.active {
+  font-weight: 400;
+  color: #fff;
+}
+.clock {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 0.4px;
+}
+
+.chip {
+  font-size: 17px;
+  font-weight: 400;
+}
+.chip .count {
+  font-size: 15px;
+  font-weight: 300;
+}
+.rl-title {
+  font-size: 28px;
+  font-weight: 400;
+}
+.rl-sub {
+  font-size: 17px;
+  font-weight: 300;
+}
+.hero-meta,
+.hero-actions {
+  flex-shrink: 0;
+}
+.hero-meta {
+  font-size: 20px;
+  font-weight: 300;
+}
+.btn-play {
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+.btn-pill {
+  font-size: 18px;
+  font-weight: 400;
+}
+.card .k {
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+}
+.card .v {
+  font-size: 23px;
+  font-weight: 400;
+}
+#home-empty h1 {
+  font-size: 60px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+}
+#home-empty p {
+  font-size: 21px;
+  font-weight: 300;
+}
+
+.lib-side h2,
+.set-side h2 {
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+}
+.side-item {
+  font-size: 21px;
+  font-weight: 300;
+}
+.side-item.active {
+  font-weight: 400;
+}
+.side-item .n {
+  font-size: 16px;
+  font-weight: 300;
+}
+.lib-title {
+  font-size: 28px;
+  font-weight: 300;
+}
+#lib-count,
+#coll-count {
+  font-size: 18px;
+  font-weight: 300;
+}
+.gcard .t {
+  font-size: 18px;
+  font-weight: 400;
+}
+.gcard .s {
+  font-size: 15px;
+  font-weight: 300;
+}
+.coll-title h2 {
+  font-size: 36px;
+  font-weight: 300;
+}
+.ccard .t {
+  font-size: 20px;
+  font-weight: 400;
+}
+.ccard .s {
+  font-size: 15px;
+  font-weight: 300;
+}
+.lib-empty {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.set-title {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+}
+.set-section {
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+}
+.set-crumbs {
+  font-size: 17px;
+  font-weight: 300;
+}
+.set-row .lbl .l {
+  font-size: 21px;
+  font-weight: 400;
+}
+.set-row .lbl .d {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: pre-line;
+}
+.set-row .val {
+  font-size: 18px;
+  font-weight: 300;
+}
+.set-row .val input {
+  font-size: 17px;
+  font-weight: 300;
+}
+.perf-card .pk,
+.perf-top .pk,
+.ra-k {
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 15px;
+  font-weight: 400;
+}
+.perf-card .pv b {
+  font-weight: 300;
+  font-size: 34px;
+}
+.ra-user {
+  font-weight: 400;
+  font-size: 28px;
+}
+
+.modal h3 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+}
+.modal .sub {
+  font-size: 17px;
+  font-weight: 300;
+}
+.menu-item {
+  font-size: 20px;
+  font-weight: 300;
+}
+.menu-item .r {
+  font-size: 17px;
+  font-weight: 300;
+}
+#hints {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.toast .tk {
+  font-size: 13px;
+  font-weight: 400;
+}
+.toast .tt {
+  font-size: 17px;
+  font-weight: 600;
+}
+.toast .tx {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.welcome-q {
+  font-size: 30px;
+  font-weight: 300;
+}
+.welcome-name {
+  font-size: 34px;
+  font-weight: 400;
+}
+.welcome-press {
+  font-size: 19px;
+  font-weight: 300;
+}
+.launch-title {
+  font-size: 38px;
+  font-weight: 300;
+}
+.launch-sub {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.tr-h1,
+.td-title {
+  font-weight: 300;
+  letter-spacing: -0.3px;
+}
+.tr-game {
+  font-weight: 300;
+}
+.tr-tag {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.a-title,
+.ac-title {
+  font-weight: 600;
+}
+.a-line,
+.a-date,
+.a-desc,
+.td-stat span,
+.td-filter,
+.td-sort {
+  font-weight: 300;
+}

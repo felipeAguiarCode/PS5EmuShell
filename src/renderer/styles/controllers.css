@@ -1,0 +1,327 @@
+.slot-badge {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  border: 2px solid color-mix(in srgb, var(--c, #8892a6) 70%, transparent);
+  color: var(--fg-dim);
+}
+.slot-badge.on {
+  background: var(--c);
+  border-color: var(--c);
+  color: #fff;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--c) 55%, transparent);
+}
+
+.modal.pad-test {
+  width: 1080px;
+  padding: 26px 30px 22px;
+}
+.pt-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.pt-head h3 {
+  margin: 0;
+}
+.pt-head .sub {
+  margin: 2px 0 0;
+}
+.pt-ico {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  color: var(--fg);
+}
+.pt-ico svg {
+  width: 100%;
+  height: 100%;
+}
+.pt-count {
+  margin-left: auto;
+  color: var(--fg-dim);
+  font-size: 17px;
+  white-space: nowrap;
+}
+.pt-count b {
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 22px;
+}
+.pt-count.all b {
+  color: var(--ok);
+}
+.pt-body {
+  display: flex;
+  gap: 26px;
+  align-items: stretch;
+}
+.pt-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pt-off {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--bad);
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 18px;
+}
+.pt-side {
+  width: 280px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pt-k {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--fg-faint);
+  margin-top: 8px;
+}
+.pt-now {
+  min-height: 30px;
+  font-size: 20px;
+  color: var(--fg);
+  word-break: break-word;
+}
+.pt-axes {
+  display: grid;
+  grid-template-columns: 44px 1fr 1fr;
+  gap: 2px 8px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-dim);
+  font-size: 15px;
+}
+.pt-axes span:nth-child(3n + 1) {
+  color: var(--fg-faint);
+}
+.pt-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pt-list span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  background: var(--glass);
+  color: var(--fg-faint);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.pt-list span.ok {
+  background: color-mix(in srgb, var(--ok) 22%, transparent);
+  color: var(--fg);
+}
+.pt-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.pt-exit {
+  position: relative;
+  margin-right: auto;
+  padding: 6px 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--glass);
+  color: var(--fg-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+.pt-exit i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.pt-exit span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pad-diagram {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.pad-diagram text {
+  fill: var(--fg-dim);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+.pad-diagram text.pd-small {
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  dominant-baseline: auto;
+}
+.pd-body {
+  fill: rgba(255, 255, 255, 0.06);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 2;
+}
+.pd-btn {
+  fill: rgba(255, 255, 255, 0.1);
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1.5;
+  transition:
+    fill 0.08s,
+    stroke 0.08s,
+    filter 0.08s;
+}
+.pd-btn.on {
+  fill: var(--accent);
+  stroke: #fff;
+  filter: drop-shadow(0 0 8px var(--accent));
+}
+.pd-ghost {
+  fill: transparent;
+}
+.pd-ghost.on {
+  fill: transparent;
+}
+.pd-pad.on {
+  fill: color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.pd-hub {
+  fill: rgba(255, 255, 255, 0.1);
+}
+.pd-trig {
+  fill: rgba(255, 255, 255, 0.06);
+}
+.pd-fill {
+  fill: var(--accent);
+}
+.pd-well {
+  fill: rgba(0, 0, 0, 0.25);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.5;
+}
+.pd-range {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-dasharray: 3 4;
+}
+.pd-cap {
+  transition: transform 0.03s linear;
+}
+.pd-sym {
+  pointer-events: none;
+}
+.pd-sym path,
+.pd-sym circle,
+.pd-sym rect {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.pd-sym text {
+  fill: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+}
+
+.modal.pad-detect {
+  width: 520px;
+  text-align: center;
+}
+.pd-wait {
+  padding: 12px 0 4px;
+}
+.pd-wait .sub.faint {
+  color: var(--fg-faint);
+  font-size: 14px;
+  margin: -8px 0 0;
+}
+.pd-pulse {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 18px;
+  padding: 22px;
+  border-radius: 50%;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  animation: padPulse 1.4s var(--ease-soft) infinite;
+}
+.pd-pulse svg {
+  width: 100%;
+  height: 100%;
+}
+@keyframes padPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 26px transparent;
+  }
+}
+body.no-motion .pd-pulse {
+  animation: none;
+}
+
+body.theme-light .pd-body {
+  fill: rgba(0, 0, 0, 0.04);
+  stroke: rgba(0, 0, 0, 0.3);
+}
+body.theme-light .pd-btn {
+  fill: rgba(0, 0, 0, 0.06);
+  stroke: rgba(0, 0, 0, 0.35);
+}
+body.theme-light .pd-btn.on {
+  fill: var(--accent);
+  stroke: #fff;
+}
+body.theme-light .pd-ghost,
+body.theme-light .pd-ghost.on {
+  fill: transparent;
+}
+body.theme-light .pd-hub,
+body.theme-light .pd-trig {
+  fill: rgba(0, 0, 0, 0.06);
+}
+body.theme-light .pd-well {
+  fill: rgba(0, 0, 0, 0.05);
+  stroke: rgba(0, 0, 0, 0.2);
+}
+body.theme-light .pd-range {
+  stroke: rgba(0, 0, 0, 0.15);
+}
+body.theme-light .pd-sym path,
+body.theme-light .pd-sym circle,
+body.theme-light .pd-sym rect {
+  stroke: rgba(0, 0, 0, 0.7);
+}
+body.theme-light .pd-sym text {
+  fill: rgba(0, 0, 0, 0.8);
+}
+body.theme-light .pt-off {
+  background: rgba(255, 255, 255, 0.7);
+}

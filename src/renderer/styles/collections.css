@@ -1,0 +1,220 @@
+body.view-collections .bg-shade {
+  background: rgba(4, 6, 12, 0.86);
+}
+#view-collections {
+  display: flex;
+  flex-direction: column;
+  padding: 8px var(--pad) 0;
+}
+.coll-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  flex: none;
+}
+.coll-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.coll-title h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+}
+#coll-count {
+  font-size: 16px;
+  color: var(--fg-faint);
+}
+.coll-back {
+  width: 28px;
+  height: 28px;
+  align-self: center;
+  color: var(--fg-dim);
+  cursor: pointer;
+}
+#coll-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 18px 12px 120px 8px;
+  scroll-padding: 40px 0 140px;
+}
+#coll-body::-webkit-scrollbar {
+  display: none;
+}
+#coll-body.entering {
+  animation: heroIn 0.4s var(--ease) both;
+}
+.coll-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 42px 34px;
+}
+.coll-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 30px 26px;
+}
+
+.ccard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  border-radius: 22px;
+}
+.ccard .stack {
+  position: relative;
+  aspect-ratio: 1;
+  margin-top: 14px;
+}
+
+.ccard .stack::before,
+.ccard .stack::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: -14px;
+  height: 40px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.ccard .stack::after {
+  left: 4%;
+  right: 4%;
+  top: -7px;
+  background: rgba(255, 255, 255, 0.16);
+}
+.mosaic {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  gap: 2px;
+  background: #1a2032;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s var(--ease);
+}
+.ccard .stack > .mosaic {
+  position: absolute;
+  inset: 0;
+}
+.mosaic img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.mosaic.n2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+}
+.mosaic.n3,
+.mosaic.n4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.mosaic.n3 img:first-child {
+  grid-row: span 2;
+}
+.mosaic.empty {
+  display: grid;
+  place-items: center;
+  color: var(--fg-faint);
+  background: rgba(255, 255, 255, 0.06);
+}
+.mosaic.empty svg {
+  width: 54px;
+  height: 54px;
+}
+.ccard.new .mosaic {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: transparent;
+  box-shadow: none;
+}
+.ccard .t {
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+.ccard .s {
+  font-size: 14px;
+  color: var(--fg-faint);
+  padding: 0 2px;
+  margin-top: -6px;
+}
+.ccard.focusable::after {
+  inset: 8px -6px auto -6px;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 24px;
+}
+.ccard.focused .mosaic {
+  transform: scale(1.03);
+}
+
+.modal.pick-games {
+  width: 760px;
+}
+.pick-list {
+  max-height: 56vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 4px;
+  margin: 0 -4px;
+}
+.menu-item.pick {
+  height: 64px;
+}
+.pick-art {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex: none;
+  background: linear-gradient(145deg, var(--c), #000);
+}
+.pick-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pick-t {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.menu-item.pick .r {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.menu-item.pick .check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  padding: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: transparent;
+}
+.menu-item.pick.checked .check {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #04120a;
+}

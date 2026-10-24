@@ -1,0 +1,10 @@
+app/
+data/
+assets/
+node_modules/
+coverage/
+dist/
+.claude/
+.specs/
+*.md
+package-lock.json

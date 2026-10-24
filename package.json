@@ -1,14 +1,24 @@
 {
   "name": "ps5-emu-shell",
   "productName": "PS5 Emu Shell",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Launcher de emuladores estilo PS5, controlado por controle (Xbox/XInput, DualShock 4 e DualSense)",
-  "main": "src/main/main.js",
+  "type": "module",
+  "main": "src/main/index.js",
   "author": "Felipe Aguiar",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win dir"
+    "build": "electron-builder --win dir",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test",
+    "check": "npm run lint && npm run format:check && npm test"
   },
   "build": {
     "appId": "local.ps5emushell.launcher",
@@ -40,7 +50,7 @@
       "signAndEditExecutable": false,
       "icon": "src/icon.ico"
     },
-    "afterPack": "build/afterPack.js"
+    "afterPack": "build/after-pack.cjs"
   },
   "dependencies": {
     "7zip-bin": "^5.2.0",
@@ -48,8 +58,12 @@
     "node-hid": "^3.4.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "electron": "^45.0.0",
     "electron-builder": "^26.15.3",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
     "rcedit": "^5.0.2"
   },
   "allowScripts": {

@@ -1,0 +1,13 @@
+export const RA_CACHE_TTL_MS = 5 * 60 * 1000;
+export const RA_IMAGE_CONCURRENCY = 6;
+export const RA_COMPLETION_PROGRESS_LIMIT = 500;
+export const RA_CACHE_DIR_PARTS = ['cache', 'ra'];
+export const RA_IMAGE_DIR_PARTS = ['cache', 'ra', 'img'];
+export const RA_INVALID_CREDENTIALS_CODE = 'invalid_credentials';
+export const RA_LATEST_CLIENT_QUERY = 'r=latestclient&e=';
+export const RA_LATEST_INTEGRATION_QUERY = 'r=latestintegration';
+export const DUCKSTATION_KEY_EXTRA_ROUNDS = 100;
+export const AES_BLOCK_BYTES = 16;
+export const DUCKSTATION_PORTABLE_MARKERS = ['portable.txt', 'portable.ini'];
+export const MACHINE_GUID_REGISTRY_KEY = 'HKLM\\SOFTWARE\\Microsoft\\Cryptography';
+export const MASKED_KEY_VISIBLE_CHARACTERS = 4;

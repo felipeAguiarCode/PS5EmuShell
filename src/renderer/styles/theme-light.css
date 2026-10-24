@@ -1,0 +1,360 @@
+body.theme-light {
+  --bg: #e8ebf1;
+  --fg: #15171d;
+  --fg-dim: rgba(21, 23, 29, 0.68);
+  --fg-faint: rgba(21, 23, 29, 0.45);
+  --glass: rgba(0, 0, 0, 0.05);
+  --glass-strong: rgba(0, 0, 0, 0.09);
+  --line: rgba(0, 0, 0, 0.12);
+  --ring: #1d2230;
+  --surface: #ffffff;
+  --shadow: 0 6px 22px rgba(20, 30, 60, 0.1);
+  background: var(--bg);
+  color: var(--fg);
+}
+body.theme-light #bg {
+  background: var(--bg);
+}
+body.theme-light .bg-shade {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(232, 235, 241, 0.97) 0%,
+      rgba(232, 235, 241, 0.85) 40%,
+      rgba(232, 235, 241, 0.35) 75%,
+      rgba(232, 235, 241, 0.55) 100%
+    ),
+    linear-gradient(0deg, rgba(232, 235, 241, 1) 0%, rgba(232, 235, 241, 0) 45%),
+    linear-gradient(180deg, rgba(232, 235, 241, 0.9) 0%, rgba(232, 235, 241, 0) 30%);
+}
+body.theme-light.view-library .bg-shade,
+body.theme-light.view-settings .bg-shade,
+body.theme-light.view-collections .bg-shade,
+body.theme-light.view-trophies .bg-shade {
+  background: rgba(232, 235, 241, 0.94);
+}
+body.theme-light .bg-layer.blurred {
+  filter: blur(48px) saturate(1.2) brightness(1.15);
+  opacity: 0.6;
+}
+
+body.theme-light .focusable::after,
+body.theme-light #focus-ring {
+  border-color: var(--ring);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 6px 20px rgba(20, 30, 60, 0.22);
+}
+body.theme-light .focusable.focused::after,
+body.theme-light #focus-ring.show {
+  animation: none;
+}
+body.theme-light #row.focused .tile.sel {
+  box-shadow:
+    0 0 0 3px var(--ring),
+    0 14px 30px rgba(20, 30, 60, 0.3);
+  animation: none;
+}
+
+body.theme-light .tab {
+  color: rgba(21, 23, 29, 0.5);
+}
+body.theme-light .tab.active,
+body.theme-light .clock {
+  color: var(--fg);
+}
+body.theme-light .icon-btn:hover,
+body.theme-light .icon-btn.focused {
+  color: var(--fg);
+  background: rgba(0, 0, 0, 0.07);
+}
+body.theme-light .chip {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--fg-dim);
+}
+body.theme-light .chip.active {
+  background: var(--fg);
+  color: #fff;
+}
+body.theme-light .chip.active .count {
+  color: rgba(255, 255, 255, 0.6);
+}
+body.theme-light .btn-play,
+body.theme-light .btn-round,
+body.theme-light .btn-pill {
+  background: rgba(0, 0, 0, 0.07);
+  color: var(--fg);
+}
+body.theme-light .btn-play.focused,
+body.theme-light .btn-play:hover,
+body.theme-light .btn-pill.focused,
+body.theme-light .btn-pill:hover {
+  background: var(--fg);
+  color: #fff;
+}
+body.theme-light .btn-round.focused,
+body.theme-light .btn-round:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+body.theme-light .btn-round.on {
+  color: #c98a00;
+}
+
+body.theme-light .rl-title {
+  text-shadow: none;
+}
+body.theme-light .hero-meta .star {
+  color: #c98a00;
+}
+body.theme-light .card,
+body.theme-light .perf-card,
+body.theme-light .perf-top,
+body.theme-light .ra-head,
+body.theme-light .tr-head,
+body.theme-light .tr-detail-head {
+  background: var(--surface);
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+body.theme-light .card .k {
+  color: var(--fg-faint);
+}
+body.theme-light .tile.lib-tile {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--fg);
+}
+body.theme-light code {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+body.theme-light .side-item.active {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--fg);
+}
+body.theme-light .side-item.focused {
+  background: var(--surface);
+  color: var(--fg);
+}
+body.theme-light .toggle.on {
+  background: var(--accent);
+}
+body.theme-light .gcard .art,
+body.theme-light .mosaic {
+  box-shadow: 0 8px 20px rgba(20, 30, 60, 0.18);
+}
+body.theme-light .mosaic.empty,
+body.theme-light .ccard.new .mosaic {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--fg-faint);
+}
+body.theme-light .ccard.new .mosaic {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+body.theme-light .ccard .stack::before {
+  background: rgba(0, 0, 0, 0.07);
+}
+body.theme-light .ccard .stack::after {
+  background: rgba(0, 0, 0, 0.11);
+}
+
+body.theme-light #view-settings {
+  background: rgba(236, 239, 244, 0.985);
+}
+body.theme-light .set-row {
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(20, 30, 60, 0.06);
+}
+body.theme-light .set-row.focused,
+body.theme-light .set-row:hover {
+  background: #fff;
+}
+body.theme-light .set-section,
+body.theme-light .set-row .lbl .d {
+  color: var(--fg-faint);
+}
+body.theme-light .set-row .val,
+body.theme-light .select-val,
+body.theme-light .rng-val {
+  color: var(--fg);
+}
+body.theme-light .set-row .val input[type='text'] {
+  background: #f3f5f9;
+  border-color: rgba(0, 0, 0, 0.14);
+  color: var(--fg);
+}
+body.theme-light .set-row .val input[type='text']:focus {
+  border-color: var(--fg);
+}
+body.theme-light .toggle {
+  background: rgba(0, 0, 0, 0.18);
+}
+body.theme-light .set-row input[type='range'] {
+  background: linear-gradient(90deg, var(--fg) var(--p, 0%), rgba(0, 0, 0, 0.15) var(--p, 0%));
+}
+body.theme-light .set-row input[type='range']::-webkit-slider-thumb {
+  background: var(--fg);
+}
+body.theme-light .rng-reset {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--fg);
+}
+body.theme-light .set-row.action .lbl .l {
+  color: #1f5fd1;
+}
+body.theme-light .set-row.danger .lbl .l {
+  color: #c93434;
+}
+body.theme-light .set-row .console-lead,
+body.theme-light .side-item .ico.console {
+  color: var(--fg);
+}
+body.theme-light .pbar,
+body.theme-light .cores span,
+body.theme-light .perf-proc .b {
+  background: rgba(0, 0, 0, 0.08);
+}
+body.theme-light .perf-card .pv b {
+  color: var(--fg);
+}
+
+body.theme-light #modal-layer {
+  background: rgba(30, 36, 50, 0.35);
+}
+body.theme-light .modal {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 30px 80px rgba(20, 30, 60, 0.3);
+}
+body.theme-light .menu-item.focused,
+body.theme-light .menu-item:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+body.theme-light #hints {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+  color: var(--fg-dim);
+}
+body.theme-light span.glyph.wide {
+  background: var(--fg);
+  color: #fff;
+}
+
+body.theme-light.glyph-ps img.glyph {
+  filter: invert(1);
+}
+body.theme-light .toast {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 10px 34px rgba(20, 30, 60, 0.22);
+}
+body.theme-light .toast .tk {
+  color: var(--fg-faint);
+}
+body.theme-light .toast .tt {
+  color: var(--fg);
+}
+body.theme-light .toast .tx {
+  color: var(--fg-dim);
+}
+body.theme-light .toast .ti {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--fg);
+}
+body.theme-light .toast .ti-badge {
+  background: #fff;
+  color: var(--fg);
+  box-shadow: 0 0 0 2px #fff;
+}
+body.theme-light .tbusy {
+  background: rgba(0, 0, 0, 0.08);
+}
+body.theme-light .tbusy i {
+  background: var(--fg);
+}
+
+body.theme-light .trow::before {
+  background: rgba(0, 0, 0, 0.1);
+}
+body.theme-light .trow.focused {
+  background: rgba(255, 255, 255, 0.7);
+}
+body.theme-light .tr-tag {
+  border-color: rgba(0, 0, 0, 0.6);
+  color: var(--fg);
+}
+body.theme-light .tr-tag.rom {
+  background: var(--fg);
+  color: #fff;
+}
+body.theme-light .tr-total,
+body.theme-light .td-stat span,
+body.theme-light .td-filter,
+body.theme-light .td-sort {
+  color: var(--fg-dim);
+}
+body.theme-light .tr-total b {
+  color: var(--fg);
+}
+body.theme-light .tr-pct i,
+body.theme-light .td-stat i {
+  background: rgba(0, 0, 0, 0.12);
+}
+body.theme-light .tr-pct s,
+body.theme-light .td-stat s {
+  background: var(--fg);
+}
+body.theme-light .tr-sep {
+  background: rgba(0, 0, 0, 0.15);
+}
+body.theme-light .arow,
+body.theme-light .acard {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+body.theme-light .acard.focused {
+  background: #fff;
+}
+body.theme-light .a-main {
+  border-right-color: rgba(0, 0, 0, 0.1);
+}
+body.theme-light .a-date,
+body.theme-light .a-line,
+body.theme-light .a-desc,
+body.theme-light .ac-tier {
+  color: var(--fg-dim);
+}
+body.theme-light .ac-desc {
+  color: var(--fg-faint);
+}
+body.theme-light .ach.locked .a-title {
+  color: var(--fg-dim);
+}
+body.theme-light .rar-ico polygon {
+  stroke: rgba(0, 0, 0, 0.45);
+}
+body.theme-light .rar-ico .off {
+  fill: rgba(0, 0, 0, 0.05);
+}
+body.theme-light .rar-ico .on {
+  fill: var(--fg);
+  stroke: var(--fg);
+}
+body.theme-light .rar-ico.lvl-0 .on {
+  fill: #d9a520;
+  stroke: #d9a520;
+}
+body.theme-light .td-mode {
+  background: rgba(0, 0, 0, 0.07);
+  color: var(--fg);
+}
+body.theme-light .td-filter.focused,
+body.theme-light .td-sort.focused,
+body.theme-light .td-mode.focused {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--fg);
+}
+body.theme-light .tr-back.focused,
+body.theme-light .tr-back:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--fg);
+}

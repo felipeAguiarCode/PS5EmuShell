@@ -1,0 +1,199 @@
+#view-library {
+  display: flex;
+  padding: 8px var(--pad) 0;
+  gap: 48px;
+}
+.lib-side {
+  width: 290px;
+  flex: none;
+}
+.lib-side h2,
+.set-side h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 8px 0 26px;
+}
+.side-item {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 17px;
+  color: var(--fg-dim);
+  text-align: left;
+  margin-bottom: 4px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.side-item .ico {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+.side-item .ico.console {
+  width: 26px;
+  height: 26px;
+  margin: 0 -2px;
+  color: #fff;
+  opacity: 0.85;
+}
+.side-item.active .ico.console,
+.side-item.focused .ico.console {
+  opacity: 1;
+}
+.side-item .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  flex: none;
+  margin: 0 6px;
+}
+.side-item .n {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--fg-faint);
+}
+.side-item.active {
+  color: #fff;
+  background: var(--glass);
+  font-weight: 600;
+}
+.side-item.focused {
+  background: var(--glass-strong);
+  color: #fff;
+}
+.lib-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lib-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  flex: none;
+}
+.lib-title {
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+#lib-count {
+  font-size: 16px;
+  color: var(--fg-faint);
+  font-weight: 400;
+}
+.lib-tools {
+  display: flex;
+  gap: 12px;
+}
+#lib-grid {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 30px 26px;
+  align-content: start;
+  padding: 14px 12px 120px 8px;
+  scroll-padding: 40px 0 140px;
+  scrollbar-width: none;
+}
+#lib-grid::-webkit-scrollbar {
+  display: none;
+}
+.gcard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 18px;
+  text-align: left;
+  content-visibility: auto;
+  contain-intrinsic-size: 176px 230px;
+}
+.gcard .art {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--c) 70%, #fff 8%),
+    color-mix(in srgb, var(--c) 35%, #000)
+  );
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s var(--ease);
+}
+.gcard .art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.gcard .art img.loaded {
+  opacity: 1;
+}
+.gcard .art .ph {
+  position: absolute;
+  inset: 0;
+  padding: 14px;
+  display: flex;
+  align-items: flex-end;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.15;
+}
+.gcard.has-img .art .ph {
+  display: none;
+}
+.gcard .fav {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffd34d;
+}
+.gcard .t {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+.gcard .s {
+  font-size: 13px;
+  color: var(--fg-faint);
+  padding: 0 2px;
+  margin-top: -6px;
+}
+.gcard.focusable::after {
+  inset: -6px -6px auto -6px;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 22px;
+}
+.gcard.focused .art {
+  transform: scale(1.04);
+}
+.lib-empty {
+  grid-column: 1 / -1;
+  color: var(--fg-dim);
+  font-size: 19px;
+  padding: 40px 0;
+}

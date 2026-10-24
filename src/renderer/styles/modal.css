@@ -1,0 +1,131 @@
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  animation: fadeIn 0.25s var(--ease-soft) both;
+}
+#modal-layer.closing {
+  animation: fadeOut 0.2s var(--ease-soft) both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+.modal {
+  width: 560px;
+  max-width: calc(100vw - 32px);
+  max-height: 86vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 28px;
+  border-radius: 26px;
+  background: rgba(28, 32, 46, 0.92);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  animation: modalIn 0.35s var(--ease) both;
+}
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.modal h3 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.modal .sub {
+  color: var(--fg-dim);
+  font-size: 15px;
+  margin-bottom: 18px;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.menu-item {
+  width: 100%;
+  height: 58px;
+  padding: 0 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 17px;
+  text-align: left;
+  transition: background 0.2s;
+}
+.menu-item .ico {
+  width: 22px;
+  height: 22px;
+  opacity: 0.85;
+  flex: none;
+}
+.menu-item .r {
+  margin-left: auto;
+  color: var(--fg-dim);
+  font-size: 15px;
+}
+.menu-item.focused,
+.menu-item:hover {
+  background: var(--glass-strong);
+}
+.menu-item.checked .r {
+  color: var(--ok);
+}
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.ov-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.ov-head > img,
+.ov-head > span {
+  width: 84px;
+  height: 84px;
+  border-radius: 16px;
+  object-fit: cover;
+  flex: none;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0;
+}
+.ov-head > span {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+.ov-k {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--ok);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.overlay-menu .menu-item .r {
+  display: flex;
+  align-items: center;
+}
