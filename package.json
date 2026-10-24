@@ -1,7 +1,7 @@
 {
   "name": "ps5-emu-shell",
   "productName": "PS5 Emu Shell",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Launcher de emuladores estilo PS5, controlado por controle (Xbox/XInput, DualShock 4 e DualSense)",
   "type": "module",
   "main": "src/main/index.js",
