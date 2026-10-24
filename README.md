@@ -104,26 +104,26 @@ Os jogos rodam nos emuladores, e cada um tem seus próprios requisitos: veja **[
 
 ## Sistemas e emuladores
 
-| Sistema | Emulador | |
-|---|---|---|
-| PlayStation | DuckStation | já configurado |
-| PlayStation 2 | PCSX2 | já configurado |
-| PlayStation Portable | PPSSPP | já configurado |
-| Nintendo DS | melonDS, DeSmuME, NooDS | já configurado |
-| GameCube | Dolphin | já configurado |
-| Game Boy Advance · Game Boy Color | mGBA, RAVBA | opcional |
-| Nintendo (NES) | Mesen, RANes, FCEUX | opcional |
-| Super Nintendo | Snes9x, RASnes9x | opcional |
-| Mega Drive / Genesis | ares | opcional |
-| Nintendo 64 | Rosalie's Mupen GUI, Project64 | opcional |
-| Dreamcast | Flycast | opcional |
-| Wii · Wii U | Dolphin · Cemu | opcional |
-| Nintendo 3DS | Azahar | opcional |
-| Xbox · Xbox 360 | xemu · Xenia Canary | opcional |
-| PlayStation 3 | RPCS3 | opcional |
-| PlayStation 4 | shadPS4 | opcional |
+| Sistema | Emulador |
+|---|---|
+| PlayStation | DuckStation |
+| PlayStation 2 | PCSX2 |
+| PlayStation Portable | PPSSPP |
+| Nintendo DS | melonDS, DeSmuME, NooDS |
+| GameCube | Dolphin |
+| Game Boy Advance · Game Boy Color | mGBA, RAVBA |
+| Nintendo (NES) | Mesen, RANes, FCEUX |
+| Super Nintendo | Snes9x, RASnes9x |
+| Mega Drive / Genesis | ares |
+| Nintendo 64 | Rosalie's Mupen GUI, Project64 |
+| Dreamcast | Flycast |
+| Wii · Wii U | Dolphin · Cemu |
+| Nintendo 3DS | Azahar |
+| Xbox · Xbox 360 | xemu · Xenia Canary |
+| PlayStation 3 | RPCS3 |
+| PlayStation 4 | shadPS4 |
 
-Os opcionais entram em **Configurações › Instalação › Adicionar mais sistemas**. Cada emulador pode **baixar a última versão** da fonte oficial ou **apontar para o seu próprio executável**; se você instalar por fora, extraia em `cores\<sistema>\<emulador>` e use **Sincronizar**.
+PlayStation, PS2, PSP, Nintendo DS e GameCube já vêm configurados; os demais entram em **Configurações › Instalação › Adicionar mais sistemas**. Cada emulador pode **baixar a última versão** da fonte oficial ou **apontar para o seu próprio executável**; se você instalar por fora, extraia em `cores\<sistema>\<emulador>` e use **Sincronizar**.
 
 Jogos de PS3 e PS4 ficam em pastas (com `EBOOT.BIN` / `eboot.bin`) dentro de `roms\ps3` ou `roms\ps4`, e o nome é lido do `PARAM.SFO`. Firmware, BIOS e chaves são configurados no próprio emulador.
 
@@ -254,52 +254,49 @@ npm run build      # gera app\win-unpacked\PS5EmuShell.exe
 ```
 
 Se o npm bloquear os scripts de instalação (aviso `install-scripts`), rode uma vez `node node_modules/electron/install.js`.
-
-O código segue o guia [`.specs/coding-style.md`](.specs/coding-style.md): paradigma funcional, ESM, nomes em inglês e sem comentários; os textos da interface ficam em português. Os dados pessoais ficam em `data\`, fora do Git.
-
 ## Arquitetura
 
 Electron com dois processos: o **main** (Node.js) cuida de controles, arquivos, emuladores e rede; o **renderer** (HTML/CSS/JS sem framework) desenha a interface. Os dois conversam por IPC, através do `preload.cjs`.
 
 ```
-launcher/
-├── src/
-│   ├── main/                         processo principal (Node.js)
-│   │   ├── index.js                  ciclo de vida do app e ligação das camadas
-│   │   ├── constants/                constantes por contexto e mensagens da interface
-│   │   ├── core/                     caminhos, config.json, stats.json e log
-│   │   ├── defaults/                 configuração padrão e catálogo de sistemas
-│   │   ├── ipc/                      canais IPC, um arquivo por contexto
-│   │   ├── input/                    XInput, HID (DualShock 4/DualSense), slots e combos
-│   │   ├── library/                  ROMs, capas, jogos de PC, coleções, avatares, tempo de jogo
-│   │   ├── emulators/                downloads, instalação, versões, sincronização e execução
-│   │   ├── retroachievements/
-│   │   │   ├── api/                  web API e caches
-│   │   │   ├── formats/              INI e token do DuckStation
-│   │   │   └── emulators/            um script de login por emulador
-│   │   ├── system/                   bateria, processos, desempenho e otimização
-│   │   ├── files/                    explorador de arquivos e detecção de sistema
-│   │   ├── window/                   janela principal, overlay do jogo e atalhos
-│   │   └── dev/                      modo snapshot (capturas e gravações automáticas)
-│   ├── preload.cjs                   ponte segura entre main e renderer
-│   └── renderer/                     interface
-│       ├── index.html
-│       ├── scripts/
-│       │   ├── main.js               inicialização da interface
-│       │   ├── core/                 estado, comandos, API e seletores
-│       │   ├── input/                controle, teclado e mouse
-│       │   ├── navigation/           navegação espacial pelo controle
-│       │   ├── ui/                   modal, toast, glyphs, sons e teclado virtual
-│       │   └── views/                uma pasta por tela: home, library, collections,
+📁 launcher/
+├── 📁 src/
+│   ├── 📁 main/                      processo principal (Node.js)
+│   │   ├── 🟨 index.js               ciclo de vida do app e ligação das camadas
+│   │   ├── 📁 constants/             constantes por contexto e mensagens da interface
+│   │   ├── 📁 core/                  caminhos, config.json, stats.json e log
+│   │   ├── 📁 defaults/              configuração padrão e catálogo de sistemas
+│   │   ├── 📁 ipc/                   canais IPC, um arquivo por contexto
+│   │   ├── 📁 input/                 XInput, HID (DualShock 4/DualSense), slots e combos
+│   │   ├── 📁 library/               ROMs, capas, jogos de PC, coleções, avatares, tempo de jogo
+│   │   ├── 📁 emulators/             downloads, instalação, versões, sincronização e execução
+│   │   ├── 📁 retroachievements/
+│   │   │   ├── 📁 api/               web API e caches
+│   │   │   ├── 📁 formats/           INI e token do DuckStation
+│   │   │   └── 📁 emulators/         um script de login por emulador
+│   │   ├── 📁 system/                bateria, processos, desempenho e otimização
+│   │   ├── 📁 files/                 explorador de arquivos e detecção de sistema
+│   │   ├── 📁 window/                janela principal, overlay do jogo e atalhos
+│   │   └── 📁 dev/                   modo snapshot (capturas e gravações automáticas)
+│   ├── 🟨 preload.cjs                ponte segura entre main e renderer
+│   └── 📁 renderer/                  interface
+│       ├── 📄 index.html
+│       ├── 📁 scripts/
+│       │   ├── 🟨 main.js            inicialização da interface
+│       │   ├── 📁 core/              estado, comandos, API e seletores
+│       │   ├── 📁 input/             controle, teclado e mouse
+│       │   ├── 📁 navigation/        navegação espacial pelo controle
+│       │   ├── 📁 ui/                modal, toast, glyphs, sons e teclado virtual
+│       │   └── 📁 views/             uma pasta por tela: home, library, collections,
 │       │                             trophies, settings, game, pc-games, topbar…
-│       ├── styles/                   CSS por tela, na ordem da cascata
-│       ├── fonts/                    Source Sans 3
-│       └── img/                      ícones de botões e troféus
-├── test/                             testes node:test (main e renderer)
-├── assets/avatars/                   avatares do perfil
-├── build/                            ícone e script pós-empacotamento
-├── docs/media/                       GIFs e vídeo deste README
-└── .specs/coding-style.md            guia de estilo do código
+│       ├── 📁 styles/                CSS por tela, na ordem da cascata
+│       ├── 📁 fonts/                 Source Sans 3
+│       └── 📁 img/                   ícones de botões e troféus
+├── 📁 test/                          testes node:test (main e renderer)
+├── 📁 assets/avatars/                avatares do perfil
+├── 📁 build/                         ícone e script pós-empacotamento
+├── 📁 docs/media/                    GIFs e vídeo deste README
+└── 📄 .specs/coding-style.md         guia de estilo do código
 ```
 
 ## Créditos
