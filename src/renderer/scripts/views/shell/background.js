@@ -8,12 +8,17 @@ let backgroundTimer = null;
 let activeLayerIndex = 0;
 let backgroundKey = null;
 
+export const BACKGROUND_STYLES = ['normal', 'blur', 'dark'];
+
+export const resolveBackgroundStyle = (appearance = {}) =>
+  BACKGROUND_STYLES.includes(appearance.backgroundStyle) ? appearance.backgroundStyle : 'normal';
+
 export const buildBackgroundPlan = ({ game, system, appearance }) => {
   const url =
     game && appearance.heroBackground !== false
       ? game.snap || (appearance.coverArt !== false ? game.cover : null)
       : null;
-  const kind = game && game.snap ? 'snap' : url ? 'blurred' : 'plain';
+  const kind = url ? 'image' : 'plain';
   const key = url || (system ? `sys:${system.color}` : 'none');
   const fallbackColor = system ? system.color : DEFAULT_BACKGROUND_COLOR;
   const image = url
@@ -28,7 +33,7 @@ const swapLayers = (plan) => {
   const currentLayer = layers[activeLayerIndex];
   activeLayerIndex = activeLayerIndex === 0 ? 1 : 0;
   const nextLayer = layers[activeLayerIndex];
-  nextLayer.classList.remove('snap', 'blurred', 'show');
+  nextLayer.classList.remove('image', 'show');
   if (plan.kind !== 'plain') nextLayer.classList.add(plan.kind);
   nextLayer.style.backgroundImage = plan.image;
   forceReflow(nextLayer);

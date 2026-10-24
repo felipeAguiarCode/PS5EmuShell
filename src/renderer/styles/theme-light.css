@@ -33,9 +33,14 @@ body.theme-light.view-collections .bg-shade,
 body.theme-light.view-trophies .bg-shade {
   background: rgba(232, 235, 241, 0.94);
 }
-body.theme-light .bg-layer.blurred {
-  filter: blur(48px) saturate(1.2) brightness(1.15);
+body.theme-light .bg-layer.image.show {
   opacity: 0.6;
+}
+body.theme-light.bg-blur .bg-layer.image {
+  filter: blur(40px) saturate(1.2) brightness(1.15);
+}
+body.theme-light.bg-dark .bg-layer.image::after {
+  opacity: 0.3;
 }
 
 body.theme-light .focusable::after,

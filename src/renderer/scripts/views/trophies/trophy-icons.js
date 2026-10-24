@@ -14,7 +14,7 @@ export const DATE_ICON =
   '<svg viewBox="0 0 24 24" class="date-ico"><rect x="3" y="6" width="15" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 3.5h13a1 1 0 0 1 1 1v9" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10.5" cy="11.5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
 
 export const renderTrophyIcon = (tier, extraClass = '') =>
-  `<span class="trophy t-${tier} ${extraClass}"><img src="img/trophies/${tier}.svg" alt="${TIER_NAMES[tier]}" draggable="false"></span>`;
+  `<span class="trophy t-${tier} ${extraClass}"><img src="img/trophies/${tier}.png" alt="${TIER_NAMES[tier]}" draggable="false"></span>`;
 
 const calculateHalfWidth = (y) => (12 * (y - PYRAMID_TOP)) / (PYRAMID_BASE - PYRAMID_TOP);
 

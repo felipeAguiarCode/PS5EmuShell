@@ -58,6 +58,7 @@ export const buildDefaultConfig = ({ profileName }) => ({
     theme: 'dark',
     motion: true,
     heroBackground: true,
+    backgroundStyle: 'normal',
     coverArt: true,
     topNav: 'icons',
   },

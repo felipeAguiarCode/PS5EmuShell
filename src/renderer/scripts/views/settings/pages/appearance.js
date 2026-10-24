@@ -1,5 +1,6 @@
 import { runCommand } from '../../../core/commands.js';
 import { renderGlyphPreview } from '../../../ui/glyphs.js';
+import { resolveBackgroundStyle } from '../../shell/background.js';
 
 export const buildButtonGlyphOptions = (autoLabel) => [
   { v: 'auto', l: autoLabel },
@@ -64,6 +65,21 @@ export const buildAppearanceRows = (context) => {
       get: () => appearance.heroBackground !== false,
       set: (value) => {
         appearance.heroBackground = value;
+      },
+      after: applyAppearance,
+    },
+    {
+      type: 'select',
+      label: 'Efeito na imagem de fundo',
+      desc: 'Normal mostra a imagem nítida, Blur desfoca e Filtro escuro escurece levemente a imagem.',
+      options: [
+        { v: 'normal', l: 'Normal' },
+        { v: 'blur', l: 'Blur' },
+        { v: 'dark', l: 'Filtro escuro' },
+      ],
+      get: () => resolveBackgroundStyle(appearance),
+      set: (value) => {
+        appearance.backgroundStyle = value;
       },
       after: applyAppearance,
     },

@@ -199,11 +199,19 @@ body.no-covers .gcard.has-img .art .ph {
   opacity: 1;
   transform: scale(1);
 }
-.bg-layer.blurred {
-  filter: blur(48px) saturate(1.4) brightness(0.8);
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-soft);
 }
-.bg-layer.snap {
-  filter: blur(3px) saturate(1.1);
+body.bg-blur .bg-layer.image {
+  filter: blur(40px) saturate(1.3) brightness(0.85);
+}
+body.bg-dark .bg-layer.image::after {
+  opacity: 0.45;
 }
 .bg-layer.plain {
   background-image: none !important;

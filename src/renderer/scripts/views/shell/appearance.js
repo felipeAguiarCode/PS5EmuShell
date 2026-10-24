@@ -9,7 +9,12 @@ import { getGlyphStyle } from '../../ui/glyphs.js';
 import { isModalOpen } from '../../ui/modal.js';
 import { startParticles, stopParticles } from '../../ui/particles.js';
 import { renderTabHints } from '../topbar/topbar.js';
-import { resetBackgroundKey, setBackground } from './background.js';
+import {
+  BACKGROUND_STYLES,
+  resetBackgroundKey,
+  resolveBackgroundStyle,
+  setBackground,
+} from './background.js';
 
 export const syncParticles = () => {
   if (isParticlesEnabled(getState().config)) startParticles();
@@ -25,6 +30,9 @@ export const applyAppearance = () => {
   bodyClasses.toggle('theme-light', appearance.theme === 'light');
   bodyClasses.toggle('no-motion', appearance.motion === false);
   bodyClasses.toggle('no-covers', appearance.coverArt === false);
+  const backgroundStyle = resolveBackgroundStyle(appearance);
+  for (const style of BACKGROUND_STYLES)
+    bodyClasses.toggle(`bg-${style}`, style === backgroundStyle);
   bodyClasses.toggle('glyph-ps', getGlyphStyle() === 'playstation');
   setFocusRingEnabled(appearance.motion !== false);
   syncParticles();
