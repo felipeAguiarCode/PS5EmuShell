@@ -240,6 +240,7 @@ function setupIpc() {
   });
 
   ipcMain.handle('config:get', () => config.get());
+  ipcMain.handle('battery:get', () => require('./battery').read());
 
   // Coleções: [{ id, name, games: [gameId], created }]
   // Capa personalizada da coleção: data/collections/<id>.<ext>; no JSON fica só o nome do arquivo.

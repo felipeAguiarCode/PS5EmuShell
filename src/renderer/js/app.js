@@ -51,6 +51,8 @@ const App = {
 
     this.tickClock();
     setInterval(() => this.tickClock(), 10000);
+    this.tickBattery();
+    setInterval(() => this.tickBattery(), 30000);
 
     Home.refresh();
     Library.refresh();
@@ -703,6 +705,19 @@ const App = {
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+  },
+
+  // Bateria do PC no canto superior direito (some em PCs sem bateria).
+  async tickBattery() {
+    const b = await api.invoke('battery:get');
+    const el = $('#battery');
+    el.classList.toggle('hidden', !b);
+    if (!b) return;
+    $('.bat-pct', el).textContent = `${b.level}%`;
+    $('.bat-bar i', el).style.width = `${Math.max(4, b.level)}%`;
+    el.classList.toggle('charging', b.charging);
+    el.classList.toggle('low', !b.charging && b.level <= 15);
+    el.title = `Bateria ${b.level}%${b.charging ? ' · carregando' : ''}`;
   },
 
   tickClock() {

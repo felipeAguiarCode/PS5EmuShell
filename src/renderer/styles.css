@@ -1485,3 +1485,10 @@ body.theme-light.nav-icons .tab.active, body.theme-light.nav-icons .tab.focused,
 .mosaic.custom { display: block; }
 .mosaic.custom img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 body.no-covers .mosaic.custom img { display: block; }
+/* Bateria do PC: porcentagem + barrinha, discretas, ao lado do relógio. */
+.battery { display: flex; align-items: center; gap: 8px; color: var(--fg-dim); font-size: 18px; font-weight: 300; font-variant-numeric: tabular-nums; }
+.bat-bar { position: relative; width: 30px; height: 13px; border: 1.5px solid currentColor; border-radius: 4px; padding: 1.5px; opacity: 0.9; }
+.bat-bar::after { content: ''; position: absolute; right: -4.5px; top: 3.5px; width: 2.5px; height: 4px; border-radius: 0 1px 1px 0; background: currentColor; }
+.bat-bar i { display: block; height: 100%; border-radius: 1.5px; background: currentColor; transition: width 0.6s var(--ease-soft); }
+.battery.charging .bat-bar i { background: var(--ok); }
+.battery.low { color: var(--bad); }
