@@ -25,8 +25,16 @@ export const findEmulatorForGame = (state, game) => {
 export const isMotionEnabled = (config) =>
   !config?.appearance || config.appearance.motion !== false;
 
+const PARTICLE_LEVELS = ['off', 'light', 'full'];
+
+export const resolveParticleLevel = (config) => {
+  const value = config?.particles;
+  if (value === false) return 'off';
+  return PARTICLE_LEVELS.includes(value) ? value : 'full';
+};
+
 export const isParticlesEnabled = (config) =>
-  Boolean(config.particles) && config.appearance?.theme !== 'light';
+  resolveParticleLevel(config) !== 'off' && config.appearance?.theme !== 'light';
 
 export const listComboButtons = (combo) => combo?.buttons || [];
 

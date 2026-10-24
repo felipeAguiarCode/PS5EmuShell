@@ -6,6 +6,7 @@ import {
   formatComboId,
   isMotionEnabled,
   isParticlesEnabled,
+  resolveParticleLevel,
 } from '../../src/renderer/scripts/core/selectors.js';
 
 const SYSTEM = {
@@ -54,6 +55,16 @@ describe('appearance selectors', () => {
   it('disables particles on the light theme', () => {
     assert.equal(isParticlesEnabled({ particles: true, appearance: { theme: 'light' } }), false);
     assert.equal(isParticlesEnabled({ particles: true, appearance: {} }), true);
+    assert.equal(isParticlesEnabled({ particles: 'off', appearance: {} }), false);
+  });
+
+  it('resolves the particle level from new and legacy values', () => {
+    assert.equal(resolveParticleLevel({ particles: 'light' }), 'light');
+    assert.equal(resolveParticleLevel({ particles: 'off' }), 'off');
+    assert.equal(resolveParticleLevel({ particles: true }), 'full');
+    assert.equal(resolveParticleLevel({ particles: false }), 'off');
+    assert.equal(resolveParticleLevel({}), 'full');
+    assert.equal(resolveParticleLevel(null), 'full');
   });
 
   it('joins combo buttons', () => {

@@ -46,7 +46,7 @@ export const buildDefaultConfig = ({ profileName }) => ({
   showWelcome: true,
   sounds: true,
   volume: 60,
-  particles: true,
+  particles: 'full',
   buttonGlyphs: 'playstation',
   hideOnLaunch: true,
   coverDownload: true,

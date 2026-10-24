@@ -1,4 +1,5 @@
 import { runCommand } from '../../../core/commands.js';
+import { resolveParticleLevel } from '../../../core/selectors.js';
 import { renderGlyphPreview } from '../../../ui/glyphs.js';
 import { resolveBackgroundStyle } from '../../shell/background.js';
 
@@ -94,10 +95,15 @@ export const buildAppearanceRows = (context) => {
       after: applyAppearance,
     },
     {
-      type: 'toggle',
-      label: 'Partículas de fundo',
-      desc: 'Pontos de luz flutuando no fundo (só no tema escuro).',
-      get: () => config.particles,
+      type: 'select',
+      label: 'Efeitos de partículas',
+      desc: 'Luzes e faíscas dançando no fundo e na tela de boas-vindas, como no PS5 (no fundo, só no tema escuro). Leves usa menos partículas; Desligadas deixa o launcher mais leve.',
+      options: [
+        { v: 'full', l: 'Completas' },
+        { v: 'light', l: 'Leves' },
+        { v: 'off', l: 'Desligadas' },
+      ],
+      get: () => resolveParticleLevel(config),
       set: (value) => {
         config.particles = value;
       },

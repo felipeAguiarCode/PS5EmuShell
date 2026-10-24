@@ -8,10 +8,12 @@ import { invokeMain } from '../../core/api.js';
 import { runCommand } from '../../core/commands.js';
 import { delay, queryOne } from '../../core/dom.js';
 import { saveConfig } from '../../core/persistence.js';
+import { resolveParticleLevel } from '../../core/selectors.js';
 import { getState, updateState } from '../../core/store.js';
 import { renderGlyph } from '../../ui/glyphs.js';
 import { ICONS } from '../../ui/icons.js';
 import { openMenu } from '../../ui/modal.js';
+import { startWelcomeParticles, stopWelcomeParticles } from '../../ui/particles.js';
 import { playSound } from '../../ui/sound.js';
 
 const pluralize = (count, singular, plural) => `${count} ${count === 1 ? singular : plural}`;
@@ -75,7 +77,10 @@ export const dismissWelcome = () => {
   playSound('select');
   const welcome = queryOne('#welcome');
   welcome.classList.add('out');
-  setTimeout(() => welcome.classList.add('hidden'), WELCOME_FADE_MS);
+  setTimeout(() => {
+    welcome.classList.add('hidden');
+    stopWelcomeParticles();
+  }, WELCOME_FADE_MS);
   runCommand('layoutHome', true);
   runCommand('updateHomeHero', true);
   setTimeout(checkSetup, SETUP_CHECK_DELAY_MS);
@@ -90,6 +95,7 @@ export const runBootSequence = async () => {
     updateState({ isWelcomeVisible: true });
     queryOne('.welcome-press').innerHTML = `Pressione ${renderGlyph('a')} para continuar`;
     queryOne('#welcome').classList.remove('hidden');
+    startWelcomeParticles(resolveParticleLevel(getState().config));
   } else {
     runCommand('updateHomeHero', true);
   }

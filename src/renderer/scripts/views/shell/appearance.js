@@ -2,7 +2,7 @@ import { DEFAULT_PROFILE_NAME } from '../../constants/ui.js';
 import { invokeMain } from '../../core/api.js';
 import { hasCommand, runCommand } from '../../core/commands.js';
 import { escapeHtml, queryOne } from '../../core/dom.js';
-import { isParticlesEnabled } from '../../core/selectors.js';
+import { isParticlesEnabled, resolveParticleLevel } from '../../core/selectors.js';
 import { getState, updateState } from '../../core/store.js';
 import { setFocusRingEnabled } from '../../ui/focus-ring.js';
 import { getGlyphStyle } from '../../ui/glyphs.js';
@@ -17,7 +17,8 @@ import {
 } from './background.js';
 
 export const syncParticles = () => {
-  if (isParticlesEnabled(getState().config)) startParticles();
+  const { config } = getState();
+  if (isParticlesEnabled(config)) startParticles(resolveParticleLevel(config));
   else stopParticles();
 };
 

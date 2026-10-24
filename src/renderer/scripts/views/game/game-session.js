@@ -8,6 +8,7 @@ import {
   findGame,
   formatComboId,
   isParticlesEnabled,
+  resolveParticleLevel,
 } from '../../core/selectors.js';
 import { getState, updateState } from '../../core/store.js';
 import { findConsoleIcon } from '../../ui/console-icons.js';
@@ -42,7 +43,8 @@ const stopParticlesWhileRunning = (delayMs) =>
   }, delayMs);
 
 const restoreParticles = () => {
-  if (isParticlesEnabled(getState().config)) startParticles();
+  const { config } = getState();
+  if (isParticlesEnabled(config)) startParticles(resolveParticleLevel(config));
 };
 
 const findRunningGame = () => {
